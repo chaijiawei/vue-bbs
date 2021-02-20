@@ -4,7 +4,7 @@
       <div class="navbar-header">
         <a href="/" class="navbar-brand">
           <span class="title">{{ logo.title }}</span>
-          <img :src="logo.src" :alt="logo.title">
+          <img width="32" :src="logo.src" :alt="logo.title">
         </a>
       </div>
     </div>
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       logo: {
-        src: `${this.publicPath}favicon.ico`,
+        src: `${this.publicPath}logo.png`,
         title: 'Learnku Vue.js'
       }
     }
