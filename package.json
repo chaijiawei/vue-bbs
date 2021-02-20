@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "bootstrap-sass": "^3.4.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },

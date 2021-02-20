@@ -1,26 +1,34 @@
-<template lang="pug">
-  div#app
-    img(src="./assets/logo.png")
-    h1 Welcome from pug & sass
+<template>
+  <div id="wrap">
+    <TheHeader :public-path="publicPath"/>
+  </div>
 </template>
 
 <script>
+import TheHeader from '@/components/layouts/TheHeader'
+
 export default {
   name: 'App',
+  components: {
+    TheHeader
+  },
+  data() {
+    return {
+      publicPath: process.env.BASE_URL
+    }
+  }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 200px;
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/v4-shims";
 
-  h1 {
-    color: #42b983;
-  }
-}
+body > .container { margin-top: 15px;}
 </style>
