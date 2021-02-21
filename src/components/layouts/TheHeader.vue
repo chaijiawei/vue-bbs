@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="lg" type="light" variant="info" class="mt-3 bg-light">
+  <b-navbar toggleable="lg" type="light" variant="info" class="my-3 bg-light">
     <b-navbar-brand  href="/">
       <img width="32" :src="logo.src" :alt="logo.title">
       <span class="title">{{ logo.title }}</span>

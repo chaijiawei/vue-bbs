@@ -1,20 +1,35 @@
 <template>
   <div class="container">
     <TheHeader :public-path="publicPath"/>
+    <b-jumbotron header="BootstrapVue" lead="Bootstrap v4 Components for Vue.js 2">
+      <p>For more information visit website</p>
+      <b-button variant="primary" href="#">More Info</b-button>
+    </b-jumbotron>
+    <b-jumbotron header="BootstrapVue" lead="Bootstrap v4 Components for Vue.js 2">
+      <p>For more information visit website</p>
+      <b-button variant="primary" href="#">More Info</b-button>
+    </b-jumbotron>
+    <b-jumbotron header="BootstrapVue" lead="Bootstrap v4 Components for Vue.js 2">
+      <p>For more information visit website</p>
+      <b-button variant="primary" href="#">More Info</b-button>
+    </b-jumbotron>
+    <TheFooter/>
   </div>
 </template>
 
 <script>
 import { BootstrapVue } from 'bootstrap-vue'
 import Vue from 'vue'
-Vue.use(BootstrapVue)
-
 import TheHeader from '@/components/layouts/TheHeader'
+import TheFooter from '@/components/layouts/TheFooter'
+
+Vue.use(BootstrapVue)
 
 export default {
   name: 'App',
   components: {
-    TheHeader
+    TheHeader,
+    TheFooter
   },
   data() {
     return {
