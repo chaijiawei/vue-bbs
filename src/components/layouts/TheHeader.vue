@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="light" variant="info" class="my-3 bg-light">
-    <b-navbar-brand  href="/">
+    <b-navbar-brand  to="/">
       <img width="32" :src="logo.src" :alt="logo.title">
       <span class="title">{{ logo.title }}</span>
     </b-navbar-brand >
@@ -14,12 +14,15 @@
         </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
+
+    <TheEntry/>
   </b-navbar>
 </template>
 
 <script>
+import TheEntry from '@/components/layouts/TheEntry'
+
 export default {
-  name: 'TheHeader',
   data() {
     return {
       logo: {
@@ -28,6 +31,9 @@ export default {
       },
       navList: ['社区', '头条', '问答', '教程'],
     }
+  },
+  components: {
+    TheEntry
   },
   methods: {
 
