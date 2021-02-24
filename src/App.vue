@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" id="app">
     <TheHeader :public-path="publicPath"/>
     <router-view></router-view>
     <TheFooter/>

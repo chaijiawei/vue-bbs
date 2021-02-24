@@ -1,5 +1,6 @@
 <template>
 <b-card header="注册">
+  <b-alert :show="showAlert" :variant="alertType" :dismissible="typeof showAlert === 'boolean'" @dismissed="showAlert=false">{{ alertMsg }}</b-alert>
   <b-form @submit.prevent="submit">
     <b-form-group label="用户名" label-for="name"
       :invalid-feedback="nameError"
@@ -29,11 +30,15 @@
 
 <script>
 import { required, minLength, maxLength, sameAs, } from 'vuelidate/lib/validators'
+import router from '@/router'
 
 export default {
   data() {
     return {
-      form: {}
+      form: {},
+      showAlert: false,
+      alertMsg: '',
+      alertType: 'success',
     }
   },
   computed: {
@@ -92,8 +97,22 @@ export default {
       if(this.$v.form.$error) {
         return
       }
-      console.log(this.form)
-    }
+      let user = {
+        name: this.form.name,
+        password: this.form.password
+      }
+
+      this.$store.dispatch('login', user)
+      this.alert('注册成功', 'success', 2)
+      setTimeout(() => {
+        router.push('/')
+      }, 2000)
+    },
+    alert(msg, type='success', show=true) {
+      this.alertMsg = msg
+      this.alertType = type
+      this.showAlert = show
+    },
   }
 }
 </script>
