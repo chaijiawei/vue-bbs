@@ -5231,6 +5231,11 @@ lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=
 
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.21.tgz?cache=0&sync_timestamp=1613835860585&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha1-Z5WRxWTDv/quhFTPCz3zcMPWkRw=
+
 log-symbols@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npm.taobao.org/log-symbols/download/log-symbols-2.2.0.tgz#5740e1c5d6f0dfda4ad9323b5332107ef6b4c40a"
@@ -7833,6 +7838,11 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+sweetalert2@10.x:
+  version "10.15.5"
+  resolved "https://registry.npm.taobao.org/sweetalert2/download/sweetalert2-10.15.5.tgz#cca272fdb44c0f3eef3e074ebed4965e9baf118f"
+  integrity sha1-zKJy/bRMDz7vPgdOvtSWXpuvEY8=
+
 table@^5.2.3:
   version "5.4.6"
   resolved "https://registry.npm.taobao.org/table/download/table-5.4.6.tgz#1292d19500ce3f86053b05f0e8e7e4a3bb21079e"
@@ -8372,6 +8382,13 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
+
+vue-sweetalert2@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npm.taobao.org/vue-sweetalert2/download/vue-sweetalert2-4.2.0.tgz#79f541c96091a7a65bcc22b66b49ee14dc4fa0c3"
+  integrity sha1-efVByWCRp6ZbzCK2a0nuFNxPoMM=
+  dependencies:
+    sweetalert2 "10.x"
 
 vue-template-compiler@^2.6.11:
   version "2.6.12"
