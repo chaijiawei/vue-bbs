@@ -9,7 +9,7 @@
 
     <b-collapse id="vue-bbs-header-navbar" is-nav>
       <b-navbar-nav>
-        <b-nav-item v-for="(item, index) in navList" :key="index" href="#" >
+        <b-nav-item v-for="(item) in navList" :key="item" href="#" >
           {{ item }}
         </b-nav-item>
       </b-navbar-nav>

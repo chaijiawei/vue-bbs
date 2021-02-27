@@ -7,21 +7,21 @@
                         :invalid-feedback="nameError"
                         :state="!$v.form.name.$error"
           >
-            <b-form-input :class="{'is-invalid': $v.form.name.$error}" v-model="form.name" id="name"></b-form-input>
+            <b-form-input :state="$v.form.name.$error ? false : null" v-model="form.name" id="name"></b-form-input>
           </b-form-group>
 
           <b-form-group label="密码" label-for="password"
                         :invalid-feedback="passwordError"
                         :state="!$v.form.password.$error"
           >
-            <b-form-input :class="{'is-invalid': $v.form.password.$error}" v-model="form.password" id="password" type="password"></b-form-input>
+            <b-form-input :state="$v.form.password.$error ? false : null" v-model="form.password" id="password" type="password"></b-form-input>
           </b-form-group>
 
           <b-form-group label="确认密码" label-for="password_confirmation"
                         :invalid-feedback="passwordConfirmationError"
                         :state="!$v.form.password_confirmation.$error"
           >
-            <b-form-input :class="{'is-invalid': $v.form.password_confirmation.$error}" v-model="form.password_confirmation" id="password_confirmation" type="password"></b-form-input>
+            <b-form-input :state="$v.form.password_confirmation.$error ? false : null" v-model="form.password_confirmation" id="password_confirmation" type="password"></b-form-input>
           </b-form-group>
 
           <b-button type="submit" variant="success">注册</b-button>
@@ -33,25 +33,17 @@
 
 <script>
 import { required, minLength, maxLength, sameAs, } from 'vuelidate/lib/validators'
-import {mapGetters} from 'vuex'
+import isLogined from '@/mixin/isLogined'
 
 export default {
+  mixins: [isLogined],
   data() {
     return {
       form: {},
+      isLoginedJumpUrl: '/',
     }
   },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if(vm.isLogined) {
-        next('/')
-      } else {
-        next()
-      }
-    })
-  },
   computed: {
-    ...mapGetters(['isLogined']),
     nameError() {
       if(!this.$v.form.name.required) {
         return '请输入用户名'
@@ -116,7 +108,8 @@ export default {
       this.$swal({
         title: '注册成功',
         icon: 'success',
-        confirmButtonText: '确认',
+        showConfirmButton: false,
+        timer: 1500,
       }).then(() => {
         this.$router.push('/')
       })

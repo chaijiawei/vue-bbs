@@ -33,6 +33,10 @@ const actions = {
     },
     login({ commit }, user) {
         commit('updateUser', user)
+    },
+    updateUser({ commit }, user) {
+        ls.setItem('user_database', user)
+        commit('updateUser', user)
     }
 }
 

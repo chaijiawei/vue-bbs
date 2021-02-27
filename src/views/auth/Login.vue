@@ -21,26 +21,16 @@
 
 <script>
 import ls from '@/utils/localStorage'
-import {mapGetters} from 'vuex'
+import isLogined from '@/mixin/isLogined'
 
 export default {
+  mixins: [isLogined],
   data() {
     return {
       name: '',
       password: '',
+      isLoginedJumpUrl: '/',
     }
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if(vm.isLogined) {
-        next('/')
-      } else {
-        next()
-      }
-    })
-  },
-  computed: {
-    ...mapGetters(['isLogined']),
   },
   methods: {
     login() {
@@ -77,7 +67,8 @@ export default {
       this.$swal({
         title: '登录成功',
         icon: 'success',
-        confirmButtonText: '确认'
+        showConfirmButton: false,
+        timer: 1500,
       }).then( () => {
         this.$router.push('/')
       })

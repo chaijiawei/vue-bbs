@@ -1,6 +1,10 @@
 <template>
   <b-navbar-nav v-if="isLogined" class="ml-auto">
     <b-nav-item-dropdown :text="user.name" right>
+      <b-dropdown-item to="/users/1/edit">
+        <i class="fa fa-user-edit"></i>
+        修改资料
+      </b-dropdown-item>
       <b-dropdown-item @click="logout" href="#">
         <i class="fa fa-sign-out"></i>
         用户退出
