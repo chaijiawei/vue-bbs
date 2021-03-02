@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import _ from 'lodash'
 
 Vue.use(Router)
+const baseUrl = process.env.BASE_URL
 
 const routes = [
     {
@@ -46,6 +47,7 @@ const router = new Router({
     mode: 'history',
     routes,
     linkExactActiveClass: 'active',
+    base: baseUrl,
 })
 
 //设置标题

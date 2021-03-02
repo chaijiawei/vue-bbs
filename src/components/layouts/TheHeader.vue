@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       logo: {
-        src: `${this.publicPath}logo.png`,
+        src: process.env.BASE_URL + "logo.png",
         title: 'Learnku Vue.js'
       },
       navList: ['社区', '头条', '问答', '教程'],
@@ -38,9 +38,6 @@ export default {
   methods: {
 
   },
-  props: {
-    publicPath: String,
-  }
 }
 </script>
 

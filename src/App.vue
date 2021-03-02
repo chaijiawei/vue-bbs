@@ -1,6 +1,6 @@
 <template>
   <div class="container" id="app">
-    <TheHeader :public-path="publicPath"/>
+    <TheHeader/>
     <router-view></router-view>
     <TheFooter/>
   </div>
@@ -18,7 +18,6 @@ export default {
   },
   data() {
     return {
-      publicPath: process.env.BASE_URL
     }
   }
 }
