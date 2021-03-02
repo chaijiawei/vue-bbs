@@ -126,7 +126,7 @@
           return
         }
 
-        this.$store.dispatch('updateUser', Object.assign(this.user, this.form))
+        this.$store.dispatch('updateUser', Object.assign({}, this.user, this.form))
         this.$swal({
           title: '更新成功',
           icon: 'success',
