@@ -42,6 +42,22 @@
           <b-form-textarea :state="$v.form.intro.$error ? false : null" v-model="form.intro" rows="5"></b-form-textarea>
         </b-form-group>
 
+        <b-form-group label-cols-md="2" content-cols-md="8" label="头像:"
+                      invalid-feedback="请上传头像"
+                      :state="!$v.form.avatar.$error"
+        >
+            <b-form-file
+                :state="$v.form.avatar.$error ? false : null"
+                @change="uploadFile($event)" accept="image/*"
+                placeholder="未选择"
+                drop-placeholder="拖放至此处"
+                browse-text="上传"
+            >
+
+            </b-form-file>
+            <b-img v-if="form.avatar" class="mt-3" fluid :src="form.avatar" alt="头像预览"></b-img>
+        </b-form-group>
+
         <b-row>
           <b-col offset-md="2">
             <b-button type="submit" variant="success">应用修改</b-button>
@@ -54,7 +70,7 @@
 </template>
 
 <script>
-  import {required, minLength, maxLength,} from 'vuelidate/lib/validators'
+  import {required, minLength, maxLength} from 'vuelidate/lib/validators'
   import {mapState} from 'vuex'
 
   export default {
@@ -71,7 +87,7 @@
           {value: '旅游', text: '旅游'},
           {value: '游戏', text: '游戏'},
         ],
-        form: Object.assign({}, this.$store.state.user)
+        form: Object.assign({}, this.$store.state.user),
       }
     },
     computed: {
@@ -117,6 +133,18 @@
           showConfirmButton: false,
           timer: 1500,
         })
+      },
+      uploadFile(e) {
+        let fr = new FileReader()
+        let file = (e.target.files && e.target.files[0]) ||
+            (e.dataTransfer.files && e.dataTransfer.files[0])
+
+        fr.onloadend = e => {
+          this.form = Object.assign({}, this.form, {avatar: e.target.result})
+        }
+        if(file) {
+          fr.readAsDataURL(file)
+        }
       }
     },
     validations: {
@@ -135,6 +163,9 @@
         intro: {
           required,
           minLength: minLength(3),
+        },
+        avatar: {
+          required,
         }
       }
     },

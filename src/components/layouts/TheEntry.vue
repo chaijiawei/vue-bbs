@@ -1,5 +1,6 @@
 <template>
   <b-navbar-nav v-if="isLogined" class="ml-auto">
+    <b-img width="60" rounded="circle" v-if="user.avatar" :src="user.avatar"></b-img>
     <b-nav-item-dropdown :text="user.name" right>
       <b-dropdown-item to="/users/1/edit">
         <i class="fa fa-user-edit"></i>
