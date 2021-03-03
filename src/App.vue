@@ -35,4 +35,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/v4-shims";
 
 @import '~sweetalert2/src/sweetalert2';
+
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+@import '~quill/dist/quill.bubble.css';
 </style>

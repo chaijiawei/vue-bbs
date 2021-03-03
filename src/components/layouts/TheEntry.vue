@@ -1,6 +1,13 @@
 <template>
   <b-navbar-nav v-if="isLogined" class="ml-auto">
-    <b-img width="60" rounded="circle" v-if="user.avatar" :src="user.avatar"></b-img>
+    <b-nav-item-dropdown class="mr-3" right no-caret html="<i class='fa fa-plus'></i>">
+      <b-dropdown-item to="/articles/create">
+        <i class="fa fa-pen"></i>
+        创建文章
+      </b-dropdown-item>
+    </b-nav-item-dropdown>
+
+    <b-avatar :src="user.avatar"></b-avatar>
     <b-nav-item-dropdown :text="user.name" right>
       <b-dropdown-item to="/users/1/edit">
         <i class="fa fa-user-edit"></i>

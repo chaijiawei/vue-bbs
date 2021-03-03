@@ -8,19 +8,19 @@ const baseUrl = process.env.BASE_URL
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        name: 'home',
         component: () => import('@/views/Home'),
         meta: {title: '主页'},
     },
     {
         path: '/auth/register',
-        name: 'Register',
+        name: 'auth.register',
         component: () => import('@/views/auth/Register'),
         meta: {title: '注册页'},
     },
     {
         path: '/auth/login',
-        name: 'Login',
+        name: 'auth.login',
         component: () => import('@/views/auth/Login'),
         meta: {title: '登录页'},
     },
@@ -32,15 +32,23 @@ const routes = [
         children: [
             {
                 path: '',
+                name: 'users.profileEdit',
                 component: () => import('@/views/users/ProfileEdit')
             },
             {
                 path: 'password',
+                name: 'users.passwordEdit',
                 component: () => import('@/views/users/PasswordEdit'),
                 meta: {title: '修改密码'},
             }
         ]
-    }
+    },
+    {
+        path: '/articles/create',
+        name: 'articles.create',
+        component: () => import('@/views/articles/Create'),
+        meta: {title: '发布文章'},
+    },
 ]
 
 const router = new Router({
