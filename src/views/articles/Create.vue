@@ -4,10 +4,9 @@
       <b-card header="发布文章">
         <b-form @submit.prevent="submit">
           <b-form-group>
-            <b-form-input placeholder="请填写文章标题"></b-form-input>
+            <b-form-input v-model="title" placeholder="请填写文章标题"></b-form-input>
           </b-form-group>
           <b-form-group>
-<!--            <b-form-textarea placeholder="请填写文章内容" rows="5"></b-form-textarea>-->
             <quill-editor v-model="content"
                           :options="editorOption"
             >
@@ -31,6 +30,7 @@
     data() {
       return {
         content: '',
+        title: '',
         editorOption: {
           placeholder: '请填写文章内容',
         }

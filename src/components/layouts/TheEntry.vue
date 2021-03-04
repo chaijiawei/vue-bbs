@@ -33,12 +33,11 @@
 </template>
 
 <script>
-import {mapState, mapGetters} from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['user']),
-    ...mapGetters(['isLogined']),
+    ...mapGetters(['isLogined', 'user']),
   },
   methods: {
     logout() {

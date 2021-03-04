@@ -27,7 +27,7 @@
 
 <script>
 import {required, minLength, sameAs} from 'vuelidate/lib/validators'
-import {mapState} from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user']),
+    ...mapGetters(['user']),
     passwordError() {
       if(!this.$v.form.password.required) {
         return '请输入密码'

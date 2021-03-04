@@ -11,7 +11,6 @@ import TheHeader from '@/components/layouts/TheHeader'
 import TheFooter from '@/components/layouts/TheFooter'
 
 export default {
-  name: 'App',
   components: {
     TheHeader,
     TheFooter,
@@ -39,4 +38,6 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.bubble.css';
+
+@import '~highlight.js/styles/default.css';
 </style>

@@ -13,6 +13,7 @@
     "bootstrap-scss": "4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
+    "highlight.js": "^10.6.0",
     "lodash": "^4.17.21",
     "vue": "^2.6.11",
     "vue-quill-editor": "^3.0.6",

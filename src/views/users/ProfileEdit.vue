@@ -71,7 +71,7 @@
 
 <script>
   import {required, minLength, maxLength} from 'vuelidate/lib/validators'
-  import {mapState} from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     data() {
@@ -87,11 +87,14 @@
           {value: '旅游', text: '旅游'},
           {value: '游戏', text: '游戏'},
         ],
-        form: Object.assign({}, this.$store.state.user),
+        form: {},
       }
     },
+    created() {
+      this.form = Object.assign({}, this.user)
+    },
     computed: {
-      ...mapState(['user']),
+      ...mapGetters(['user']),
       nameError() {
         if(!this.$v.form.name.required) {
           return '请输入用户名'
