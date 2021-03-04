@@ -9,7 +9,7 @@
 
     <b-avatar :src="user.avatar"></b-avatar>
     <b-nav-item-dropdown :text="user.name" right>
-      <b-dropdown-item to="/users/1/edit">
+      <b-dropdown-item :to="`/users/${user.id}/edit`">
         <i class="fa fa-user-edit"></i>
         修改资料
       </b-dropdown-item>

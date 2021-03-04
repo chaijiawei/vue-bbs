@@ -3,10 +3,10 @@
     <b-col md="8">
       <b-card header="发布文章">
         <b-form @submit.prevent="submit">
-          <b-form-group>
-            <b-form-input v-model="title" placeholder="请填写文章标题"></b-form-input>
+          <b-form-group :state="!$v.title.$error" :invalid-feedback="titleError">
+            <b-form-input :state="$v.title.$error ? false : null" v-model="title" placeholder="请填写文章标题"></b-form-input>
           </b-form-group>
-          <b-form-group>
+          <b-form-group :state="!$v.content.$error" :invalid-feedback="contentError">
             <quill-editor v-model="content"
                           :options="editorOption"
             >
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+  import {required} from 'vuelidate/lib/validators'
+  import {mapGetters, mapActions} from 'vuex'
+
   export default {
     data() {
       return {
@@ -36,9 +39,52 @@
         }
       }
     },
+    computed: {
+      ...mapGetters(['user']),
+      titleError() {
+        if(!this.$v.title.required) {
+          return '请填写标题'
+        }
+        return ''
+      },
+      contentError() {
+        if(!this.$v.content.required) {
+          return '请填写文章内容'
+        }
+        return ''
+      },
+    },
     methods: {
+      ...mapActions(['createArticle']),
       submit() {
-        console.log(this.content)
+        this.$v.$touch()
+        if(this.$v.$error) {
+          return
+        }
+
+        let article = {
+          title: this.title,
+          content: this.content,
+          user_id: this.user.id
+        }
+        this.createArticle(article)
+
+        this.$swal({
+          title: '创建成功',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          // this.$router.push('/')
+        })
+      }
+    },
+    validations: {
+      title: {
+        required,
+      },
+      content: {
+        required,
       }
     }
   }

@@ -6,26 +6,21 @@ const state = () => ({
 })
 
 const mutations = {
-    saveUser(state, user) {
-        ls.setItem('user_database', user)
-    },
-    logoutUser(state) {
-        state.user = null
-        ls.removeItem('user')
-    },
     updateUser(state, user) {
         state.user = user
-        ls.setItem('user', user)
     },
 }
 
 const actions = {
     register({ commit }, user) {
-        commit('saveUser', user)
+        user.id = _.random(1, 9999)
+        ls.setItem('user_database', user)
         commit('updateUser', user)
+        ls.setItem('user', user)
     },
     logout({ commit }) {
-        commit('logoutUser')
+        commit('updateUser', null)
+        ls.removeItem('user')
     },
     login({ commit }, user) {
         commit('updateUser', user)
@@ -33,6 +28,7 @@ const actions = {
     updateUser({ commit }, user) {
         ls.setItem('user_database', user)
         commit('updateUser', user)
+        ls.setItem('user', user)
     }
 }
 
