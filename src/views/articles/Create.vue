@@ -28,6 +28,7 @@
 <script>
   import {required} from 'vuelidate/lib/validators'
   import {mapGetters, mapActions} from 'vuex'
+  import isLogined from '@/mixin/isLogined'
 
   export default {
     data() {
@@ -36,9 +37,11 @@
         title: '',
         editorOption: {
           placeholder: '请填写文章内容',
-        }
+        },
+        isNotLoginedJumpUrl: '/'
       }
     },
+    mixins: [isLogined],
     computed: {
       ...mapGetters(['user']),
       titleError() {
@@ -56,7 +59,7 @@
     },
     methods: {
       ...mapActions(['createArticle']),
-      submit() {
+      async submit() {
         this.$v.$touch()
         if(this.$v.$error) {
           return
@@ -65,9 +68,9 @@
         let article = {
           title: this.title,
           content: this.content,
-          user_id: this.user.id
+          user_id: this.user.id,
         }
-        this.createArticle(article)
+        let articleId = await this.createArticle(article)
 
         this.$swal({
           title: '创建成功',
@@ -75,9 +78,9 @@
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          // this.$router.push('/')
+          this.$router.push({name: 'articles.show', params: {id: articleId}})
         })
-      }
+      },
     },
     validations: {
       title: {

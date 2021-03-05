@@ -38,6 +38,4 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.bubble.css';
-
-@import '~highlight.js/styles/default.css';
 </style>

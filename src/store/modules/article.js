@@ -16,11 +16,13 @@ const mutations = {
 }
 
 const actions = {
-    createArticle({commit, dispatch}, article) {
+     createArticle({commit, dispatch}, article) {
         article.id = uuidv4()
         article.created_at = moment().format('YYYY-MM-DD HH:mm:ss')
         commit('addArticle', article)
-        dispatch('syncArticles');
+        dispatch('syncArticles')
+
+        return article.id
     },
     syncArticles({state}) {
         ls.setItem('articles', state.articles)
@@ -28,7 +30,15 @@ const actions = {
 }
 
 const getters = {
-
+    articles: state => state.articles,
+    getArticleById: (state, getters) => (articleId) => {
+        let article = _.find(state.articles, (article) => article.id === articleId)
+        if(article) {
+            let user = getters.getUserById(article.user_id)
+            article = Object.assign({}, article, {user})
+        }
+        return article
+    },
 }
 
 

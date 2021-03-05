@@ -24,6 +24,7 @@ const actions = {
     },
     login({ commit }, user) {
         commit('updateUser', user)
+        ls.setItem('user', user)
     },
     updateUser({ commit }, user) {
         ls.setItem('user_database', user)
@@ -35,6 +36,7 @@ const actions = {
 const getters = {
     isLogined: state => !_.isEmpty(state.user),
     user: state => state.user,
+    getUserById: () => () => ls.getItem('user_database')
 }
 
 export default {

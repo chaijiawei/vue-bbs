@@ -6,6 +6,7 @@ Vue.use(Router)
 const baseUrl = process.env.BASE_URL
 
 const routes = [
+    //登录注册
     {
         path: '/',
         name: 'home',
@@ -24,6 +25,8 @@ const routes = [
         component: () => import('@/views/auth/Login'),
         meta: {title: '登录页'},
     },
+
+    //用户
     {
         path: '/users/:id/edit',
         component: () => import('@/views/users/Edit'),
@@ -43,11 +46,18 @@ const routes = [
             }
         ]
     },
+
+    //文章
     {
         path: '/articles/create',
         name: 'articles.create',
         component: () => import('@/views/articles/Create'),
         meta: {title: '发布文章'},
+    },
+    {
+        path: '/articles/:id/show',
+        name: 'articles.show',
+        component: () => import('@/views/articles/Show'),
     },
 ]
 
