@@ -51,13 +51,21 @@ const routes = [
     {
         path: '/articles/create',
         name: 'articles.create',
-        component: () => import('@/views/articles/Create'),
+        component: () => import('@/views/articles/CreateAndEdit'),
         meta: {title: '发布文章'},
     },
     {
         path: '/articles/:id/show',
         name: 'articles.show',
+        props: true,
         component: () => import('@/views/articles/Show'),
+    },
+    {
+        path: '/articles/:id/edit',
+        name: 'articles.edit',
+        props: true,
+        component: () => import('@/views/articles/CreateAndEdit'),
+        meta: {title: '编辑文章'}
     },
 ]
 

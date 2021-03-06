@@ -11,8 +11,14 @@ export default {
     computed: {
         ...mapGetters(['isLogined']),
     },
+    methods: {
+      beforeRouteEnterHook() {
+
+      }
+    },
     beforeRouteEnter(to, from, next) {
         next((vm) => {
+            vm.beforeRouteEnterHook(to, from)
             if(vm.isLogined) {
                 _.isEmpty(vm.isLoginedJumpUrl)
                     ? next()

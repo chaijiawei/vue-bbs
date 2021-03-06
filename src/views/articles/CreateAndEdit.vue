@@ -1,7 +1,7 @@
 <template>
   <b-row align-h="center">
     <b-col md="8">
-      <b-card header="发布文章">
+      <b-card :header="id ? '编辑文章' : '发布文章'">
         <b-form @submit.prevent="submit">
           <b-form-group :state="!$v.title.$error" :invalid-feedback="titleError">
             <b-form-input :state="$v.title.$error ? false : null" v-model="title" placeholder="请填写文章标题"></b-form-input>
@@ -15,8 +15,14 @@
           </b-form-group>
 
           <b-button type="submit" variant="success">
-            <i class="fa fa-reply"></i>
-            发表
+            <span v-if="id">
+              <i class="fa fa-edit"></i>
+              修改
+            </span>
+            <span v-else>
+              <i class="fa fa-reply"></i>
+              发表
+            </span>
           </b-button>
         </b-form>
       </b-card>
@@ -32,6 +38,7 @@
   import toolbarConfig from '@/config/quillToolbar'
 
   export default {
+    props: ['id'],
     data() {
       return {
         content: '',
@@ -45,6 +52,14 @@
         },
         isNotLoginedJumpUrl: '/'
       }
+    },
+    beforeRouteLeave (to, from, next) {
+      this.content = ''
+      this.title = ''
+      next()
+    },
+    created() {
+
     },
     mixins: [isLogined],
     computed: {
@@ -63,28 +78,48 @@
       },
     },
     methods: {
-      ...mapActions(['createArticle']),
+      ...mapActions(['createArticle', 'updateArticle']),
       async submit() {
         this.$v.$touch()
         if(this.$v.$error) {
           return
         }
 
-        let article = {
-          title: this.title,
-          content: this.content,
-          user_id: this.user.id,
+        let article, articleId
+        if(this.id) { //修改
+          articleId = this.id
+          article = {
+            id: this.id,
+            title: this.title,
+            content: this.content,
+          }
+          this.updateArticle(article)
+        } else { //创建
+         article = {
+            title: this.title,
+            content: this.content,
+            user_id: this.user.id,
+          }
+          articleId = await this.createArticle(article)
         }
-        let articleId = await this.createArticle(article)
+
 
         this.$swal({
-          title: '创建成功',
+          title: this.id ? '修改成功' : '创建成功',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
           this.$router.push({name: 'articles.show', params: {id: articleId}})
         })
+      },
+      beforeRouteEnterHook() {
+        if(this.id) {
+          let article = this.$store.getters.getArticleById(this.id)
+          let {content, title} = article
+          this.content = content
+          this.title = title
+        }
       },
     },
     validations: {

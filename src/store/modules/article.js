@@ -12,6 +12,19 @@ const state = () => ({
 const mutations = {
     addArticle(state, article) {
         state.articles.push(article)
+    },
+    updateArticle(state, article) {
+        _.forEach(state.articles, (value, index, collection) => {
+            if(value.id === article.id) {
+                value = Object.assign({}, value, article)
+                collection[index] = value
+                return false
+            }
+        })
+    },
+    deleteArticle(state, articleId) {
+        let articles = _.filter(state.articles, article => article.id !== articleId)
+        state.articles = articles
     }
 }
 
@@ -23,6 +36,15 @@ const actions = {
         dispatch('syncArticles')
 
         return article.id
+    },
+    updateArticle({commit, dispatch}, article) {
+        article.updated_at = moment().format('YYYY-MM-DD HH:mm:ss')
+        commit('updateArticle', article)
+        dispatch('syncArticles')
+    },
+    deleteArticle({commit, dispatch}, articleId) {
+        commit('deleteArticle', articleId)
+        dispatch('syncArticles')
     },
     syncArticles({state}) {
         ls.setItem('articles', state.articles)

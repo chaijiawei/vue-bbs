@@ -12,7 +12,16 @@
         </small>
 
         <hr>
+
         <b-card-text v-html="content"></b-card-text>
+        <b-card-text class="mt-5">
+          <b-button size="sm" :to="`/articles/${id}/edit`" class="mr-2" variant="outline-secondary">
+            <i class="fa fa-edit"></i>
+          </b-button>
+          <b-button @click="onDelete" size="sm" variant="outline-secondary">
+            <i class="fa fa-trash"></i>
+          </b-button>
+        </b-card-text>
       </b-card>
     </b-col>
   </b-row>
@@ -23,6 +32,7 @@ import hljs from 'highlight.js'
 import Date from '@/components/Date'
 
 export default {
+  props: ['id'],
   data() {
     return {
       title: '',
@@ -35,13 +45,12 @@ export default {
     Date
   },
   created() {
-    let articleId = this.$route.params.id
-    let article = this.$store.getters.getArticleById(articleId)
+    let article = this.$store.getters.getArticleById(this.id)
 
     if(article) {
-      this.title = article.title
+      document.title = this.title = article.title
       this.content = article.content
-      this.createdAt = article.created_at
+      this.createdAt = article.updated_at || article.created_at
       this.user = article.user
     }
 
@@ -52,5 +61,27 @@ export default {
       })
     })
   },
+  methods: {
+    async onDelete() {
+      let res = await this.$swal({
+        title: '确认删除',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        cancelButtonColor: '#d33',
+      })
+      if(res.isConfirmed) {
+        this.$store.dispatch('deleteArticle', this.id)
+        await this.$swal({
+          title: '删除成功',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+        this.$router.push('/')
+      }
+    }
+  }
 }
 </script>
