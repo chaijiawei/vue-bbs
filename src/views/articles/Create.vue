@@ -29,6 +29,7 @@
   import {required} from 'vuelidate/lib/validators'
   import {mapGetters, mapActions} from 'vuex'
   import isLogined from '@/mixin/isLogined'
+  import toolbarConfig from '@/config/quillToolbar'
 
   export default {
     data() {
@@ -37,6 +38,10 @@
         title: '',
         editorOption: {
           placeholder: '请填写文章内容',
+          modules: {
+            syntax: true,
+            toolbar: toolbarConfig,
+          },
         },
         isNotLoginedJumpUrl: '/'
       }

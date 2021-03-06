@@ -54,7 +54,3 @@ export default {
   },
 }
 </script>
-
-<style>
-@import '~highlight.js/styles/default.css';
-</style>
