@@ -14,7 +14,7 @@
         <hr>
 
         <b-card-text v-html="content"></b-card-text>
-        <b-card-text class="mt-5">
+        <b-card-text class="mt-5" v-if="isLogined">
           <b-button size="sm" :to="`/articles/${id}/edit`" class="mr-2" variant="outline-secondary">
             <i class="fa fa-edit"></i>
           </b-button>
@@ -30,6 +30,7 @@
 <script>
 import hljs from 'highlight.js'
 import Date from '@/components/Date'
+import {mapGetters} from 'vuex'
 
 export default {
   props: ['id'],
@@ -43,6 +44,9 @@ export default {
   },
   components: {
     Date
+  },
+  computed: {
+    ...mapGetters(['isLogined'])
   },
   created() {
     let article = this.$store.getters.getArticleById(this.id)
