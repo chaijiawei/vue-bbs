@@ -8,7 +8,10 @@ export default {
             { 'color': [] },
             { 'background': [] },
         ],
+        ['link', 'image', 'video'],
         ['clean'],
-        ['link', 'image', 'video']
     ],
+    handlers: {
+
+    }
 }

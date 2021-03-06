@@ -97,3 +97,9 @@
     }
   }
 </script>
+
+<style>
+.ql-editor {
+  min-height: 250px
+}
+</style>
