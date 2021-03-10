@@ -55,17 +55,29 @@ const routes = [
         meta: {title: '发布文章'},
     },
     {
-        path: '/articles/:id/show',
-        name: 'articles.show',
-        props: true,
-        component: () => import('@/views/articles/Show'),
-    },
-    {
         path: '/articles/:id/edit',
         name: 'articles.edit',
         props: true,
         component: () => import('@/views/articles/CreateAndEdit'),
         meta: {title: '编辑文章'}
+    },
+    {
+        path: '/column/:userId',
+        props: true,
+        component: () => import('@/views/articles/Column'),
+        children: [
+            {
+                path: '',
+                name: 'column.list',
+                component: () => import('@/views/articles/List')
+            },
+            {
+                path: '/articles/:id/show',
+                name: 'articles.show',
+                props: true,
+                component: () => import('@/views/articles/Show'),
+            },
+        ]
     },
 ]
 

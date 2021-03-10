@@ -31,7 +31,9 @@ const mutations = {
 const actions = {
      createArticle({commit, dispatch}, article) {
         article.id = uuidv4()
-        article.created_at = moment().format('YYYY-MM-DD HH:mm:ss')
+        let time = moment().format('YYYY-MM-DD HH:mm:ss')
+        article.created_at = time
+        article.updated_at = time
         commit('addArticle', article)
         dispatch('syncArticles')
 
@@ -52,7 +54,14 @@ const actions = {
 }
 
 const getters = {
-    articles: state => state.articles,
+    articles: (state, getters) => () => {
+        let articles = Object.assign({}, state.articles)
+        _.forEach(articles, function(article) {
+            article.user = getters.getUserById(article.user_id)
+        })
+        articles = _.orderBy(articles, ['updated_at'], ['desc'])
+        return articles
+    },
     getArticleById: (state, getters) => (articleId) => {
         let article = _.find(state.articles, (article) => article.id === articleId)
         if(article) {
@@ -61,6 +70,7 @@ const getters = {
         }
         return article
     },
+    articleNum: state => state.articles.length
 }
 
 

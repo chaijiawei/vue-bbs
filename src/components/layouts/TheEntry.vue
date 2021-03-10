@@ -9,6 +9,10 @@
 
     <b-avatar :src="user.avatar"></b-avatar>
     <b-nav-item-dropdown :text="user.name" right>
+      <b-dropdown-item :to="`/column/${user.id}`">
+        <i class="fa fa-list-ul"></i>
+        我的专栏
+      </b-dropdown-item>
       <b-dropdown-item :to="`/users/${user.id}/edit`">
         <i class="fa fa-user-edit"></i>
         修改资料
