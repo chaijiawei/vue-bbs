@@ -7,6 +7,14 @@ import store from '@/store'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueQuillEditor from 'vue-quill-editor'
 
+import Quill from 'quill'
+import { ImageDrop } from 'quill-image-drop-module'
+Quill.register('modules/imageDrop', ImageDrop);
+import ImageResize from 'quill-image-resize-module'
+Quill.register('modules/imageResize', ImageResize)
+import QuillEmoji from 'quill-emoji'
+Quill.register('modules/emoji', QuillEmoji)
+
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(Vuelidate)

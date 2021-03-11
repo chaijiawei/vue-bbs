@@ -10,19 +10,24 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "add": "^2.0.6",
     "bootstrap-scss": "4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "highlight.js": "^10.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "quill-emoji": "^0.1.8",
+    "quill-image-drop-module": "^1.0.3",
+    "quill-image-resize-module": "^3.0.0",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.5.1",
     "vue-sweetalert2": "^4.2.0",
     "vuelidate": "^0.7.6",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

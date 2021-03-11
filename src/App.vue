@@ -9,9 +9,6 @@
 <script>
 import TheHeader from '@/components/layouts/TheHeader'
 import TheFooter from '@/components/layouts/TheFooter'
-import hljs from 'highlight.js'
-
-window.hljs = hljs
 
 export default {
   components: {
@@ -42,4 +39,6 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.bubble.css';
 @import '~highlight.js/styles/default.css';
+
+@import '~quill-emoji/dist/quill-emoji.css';
 </style>

@@ -47,6 +47,11 @@
           placeholder: '请填写文章内容',
           modules: {
             syntax: true,
+            imageDrop: true,
+            imageResize: true,
+            "emoji-toolbar": true,
+            "emoji-textarea": false,
+            "emoji-shortname": true,
             toolbar: toolbarConfig,
           },
         },

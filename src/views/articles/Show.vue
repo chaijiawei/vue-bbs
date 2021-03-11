@@ -16,7 +16,7 @@
         <b-button size="sm" :to="`/articles/${id}/edit`" class="mr-2" variant="outline-secondary">
           <i class="fa fa-edit"></i>
         </b-button>
-        <b-button @click="onDelete" size="sm" variant="outline-secondary">
+        <b-button @click="onDelete" size="sm" variant="outline-danger">
           <i class="fa fa-trash"></i>
         </b-button>
       </b-card-text>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import hljs from 'highlight.js'
 import Date from '@/components/Date'
 import {mapGetters} from 'vuex'
 
@@ -57,7 +56,7 @@ export default {
     this.$nextTick(() => {
       this.$el.querySelectorAll('pre') &&
       this.$el.querySelectorAll('pre').forEach((block) => {
-        hljs.highlightBlock(block);
+        window.hljs.highlightBlock(block);
       })
     })
   },
@@ -69,7 +68,6 @@ export default {
         showCancelButton: true,
         confirmButtonText: '确认',
         cancelButtonText: '取消',
-        cancelButtonColor: '#d33',
       })
       if(res.isConfirmed) {
         this.$store.dispatch('deleteArticle', this.id)
