@@ -6945,10 +6945,10 @@ quill-image-drop-module@^1.0.3:
   dependencies:
     quill "^1.2.2"
 
-quill-image-resize-module@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/quill-image-resize-module/download/quill-image-resize-module-3.0.0.tgz#0fd93746a837336d95b2f536140416a623c71771"
-  integrity sha1-D9k3Rqg3M22VsvU2FAQWpiPHF3E=
+quill-image-resize@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.npm.taobao.org/quill-image-resize/download/quill-image-resize-3.0.9.tgz#5677fb6257560bff951153ddbdb836758e49f804"
+  integrity sha1-Vnf7YldWC/+VEVPdvbg2dY5J+AQ=
   dependencies:
     lodash "^4.17.4"
     quill "^1.2.2"

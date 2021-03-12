@@ -51,7 +51,7 @@
             imageResize: true,
             "emoji-toolbar": true,
             "emoji-textarea": false,
-            "emoji-shortname": true,
+            "emoji-shortname": false,
             toolbar: toolbarConfig,
           },
         },

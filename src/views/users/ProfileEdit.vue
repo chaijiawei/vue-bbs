@@ -129,13 +129,21 @@
           return
         }
 
-        this.$store.dispatch('updateUser', Object.assign({}, this.user, this.form))
-        this.$swal({
-          title: '更新成功',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500,
-        })
+        try {
+          this.$store.dispatch('updateUser', Object.assign({}, this.user, this.form))
+          this.$swal({
+            title: '更新成功',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        } catch(err) {
+          this.$swal({
+            title: '更新失败',
+            text: err,
+            icon: 'error',
+          })
+        }
       },
       uploadFile(e) {
         let fr = new FileReader()

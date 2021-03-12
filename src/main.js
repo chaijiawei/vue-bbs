@@ -7,10 +7,11 @@ import store from '@/store'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueQuillEditor from 'vue-quill-editor'
 
+//quill 插件
 import Quill from 'quill'
 import { ImageDrop } from 'quill-image-drop-module'
 Quill.register('modules/imageDrop', ImageDrop);
-import ImageResize from 'quill-image-resize-module'
+import ImageResize from 'quill-image-resize'
 Quill.register('modules/imageResize', ImageResize)
 import QuillEmoji from 'quill-emoji'
 Quill.register('modules/emoji', QuillEmoji)
