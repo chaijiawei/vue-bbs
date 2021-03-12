@@ -64,7 +64,7 @@
       next()
     },
     created() {
-
+      this.initArticle()
     },
     mixins: [isLogined],
     computed: {
@@ -90,42 +90,53 @@
           return
         }
 
-        let article, articleId
-        if(this.id) { //修改
-          articleId = this.id
-          article = {
-            id: this.id,
-            title: this.title,
-            content: this.content,
+        try {
+          let article, articleId
+          if(this.id) { //修改
+            articleId = this.id
+            article = {
+              id: this.id,
+              title: this.title,
+              content: this.content,
+            }
+            this.updateArticle(article)
+          } else { //创建
+            article = {
+              title: this.title,
+              content: this.content,
+              user_id: this.user.id,
+            }
+            articleId = await this.createArticle(article)
           }
-          this.updateArticle(article)
-        } else { //创建
-         article = {
-            title: this.title,
-            content: this.content,
-            user_id: this.user.id,
-          }
-          articleId = await this.createArticle(article)
+
+          this.$swal({
+            title: this.id ? '修改成功' : '创建成功',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            this.$router.push({name: 'articles.show', params: {id: articleId}})
+          })
+        } catch(err) {
+          this.$swal({
+            title: this.id ? '修改失败' : '创建失败',
+            text: err.message,
+            icon: 'error',
+          })
         }
-
-
-        this.$swal({
-          title: this.id ? '修改成功' : '创建成功',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          this.$router.push({name: 'articles.show', params: {id: articleId}})
-        })
       },
       beforeRouteEnterHook() {
+        this.initArticle()
+      },
+
+      initArticle() {
         if(this.id) {
           let article = this.$store.getters.getArticleById(this.id)
           let {content, title} = article
           this.content = content
           this.title = title
         }
-      },
+      }
     },
     validations: {
       title: {

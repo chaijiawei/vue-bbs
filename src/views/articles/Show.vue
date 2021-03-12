@@ -11,7 +11,7 @@
 
       <hr>
 
-      <b-card-text v-html="content"></b-card-text>
+      <b-card-text id="article-container" v-html="content"></b-card-text>
       <b-card-text class="mt-5" v-if="isLogined">
         <b-button size="sm" :to="`/articles/${id}/edit`" class="mr-2" variant="outline-secondary">
           <i class="fa fa-edit"></i>
@@ -83,3 +83,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #article-container {
+    img {
+      max-width: 100%;
+    }
+  }
+</style>

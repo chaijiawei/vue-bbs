@@ -3,10 +3,14 @@ import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 
+const initArticles = () => {
+    return ls.getItem('articles') && _.isArray(ls.getItem('articles'))
+        ? ls.getItem('articles')
+        : [];
+}
+
 const state = () => ({
-    articles: ls.getItem('articles') && _.isArray(ls.getItem('articles'))
-            ? ls.getItem('articles')
-            : [],
+    articles: initArticles(),
 })
 
 const mutations = {
@@ -24,6 +28,9 @@ const mutations = {
     },
     deleteArticle(state, articleId) {
         let articles = _.filter(state.articles, article => article.id !== articleId)
+        state.articles = articles
+    },
+    resetArticles(state, articles) {
         state.articles = articles
     }
 }
@@ -48,8 +55,13 @@ const actions = {
         commit('deleteArticle', articleId)
         dispatch('syncArticles')
     },
-    syncArticles({state}) {
-        ls.setItem('articles', state.articles)
+    syncArticles({state, commit}) {
+        try {
+            ls.setItem('articles', state.articles)
+         } catch(err) {
+            commit('resetArticles', initArticles())
+            throw new Error('储存空间不足~')
+        }
     },
 }
 

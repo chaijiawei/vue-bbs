@@ -27,9 +27,14 @@ const actions = {
         ls.setItem('user', user)
     },
     updateUser({ commit }, user) {
-        ls.setItem('user_database', user)
-        commit('updateUser', user)
-        ls.setItem('user', user)
+        try {
+            ls.setItem('user_database', user)
+            commit('updateUser', user)
+            ls.setItem('user', user)
+        } catch(err) {
+            commit('updateUser', ls.getItem('user'))
+            throw new Error('储存空间不足~')
+        }
     }
 }
 

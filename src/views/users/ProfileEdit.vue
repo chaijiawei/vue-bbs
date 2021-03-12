@@ -140,7 +140,7 @@
         } catch(err) {
           this.$swal({
             title: '更新失败',
-            text: err,
+            text: err.message,
             icon: 'error',
           })
         }
