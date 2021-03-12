@@ -32,6 +32,32 @@ const mutations = {
     },
     resetArticles(state, articles) {
         state.articles = articles
+    },
+    addLikeUser(state, {articleId, userId}) {
+        _.forEach(state.articles, (article, index) => {
+            if(article.id === articleId) {
+                if(!state.articles[index].likeUsers) {
+                    state.articles[index].likeUsers = []
+                }
+                if(! _.find(state.articles[index].likeUsers, likeUserId => likeUserId === userId)) {
+                    state.articles[index].likeUsers.push(userId)
+                }
+                return false
+            }
+        })
+    },
+    removeLikeUser(state, {articleId, userId}) {
+        _.forEach(state.articles, (article, index) => {
+            if(article.id === articleId) {
+                if(state.articles[index].likeUsers) {
+                    state.articles[index].likeUsers =
+                        _.filter(state.articles[index].likeUsers,
+                                likeUserId => likeUserId !== userId)
+                }
+
+                return false
+            }
+        })
     }
 }
 
@@ -55,10 +81,19 @@ const actions = {
         commit('deleteArticle', articleId)
         dispatch('syncArticles')
     },
+    like({commit, dispatch}, likeData) {
+        commit('addLikeUser', likeData)
+        dispatch('syncArticles')
+    },
+    unlike({commit, dispatch}, likeData) {
+        commit('removeLikeUser', likeData)
+        dispatch('syncArticles')
+    },
+
     syncArticles({state, commit}) {
         try {
             ls.setItem('articles', state.articles)
-         } catch(err) {
+        } catch(err) {
             commit('resetArticles', initArticles())
             throw new Error('储存空间不足~')
         }
@@ -75,14 +110,19 @@ const getters = {
         return articles
     },
     getArticleById: (state, getters) => (articleId) => {
-        let article = _.find(state.articles, (article) => article.id === articleId)
+        let article = _.find(state.articles, article => article.id === articleId)
         if(article) {
             let user = getters.getUserById(article.user_id)
             article = Object.assign({}, article, {user})
         }
         return article
     },
-    articleNum: state => state.articles.length
+    articleNum: state => state.articles.length,
+    likeUsers: (state, getters) => (articleId) => {
+        let article = getters.getArticleById(articleId)
+
+        return article.likeUsers ? article.likeUsers : []
+    }
 }
 
 

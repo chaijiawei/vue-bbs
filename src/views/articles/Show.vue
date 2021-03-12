@@ -1,4 +1,5 @@
 <template>
+  <div>
     <b-card>
       <b-card-title class="text-center">
         {{ title }}
@@ -21,11 +22,31 @@
         </b-button>
       </b-card-text>
     </b-card>
+
+    <b-card class="mt-4 text-center" v-if="isLogined">
+      <b-button variant="primary" v-if="!isLike" @click="like">点赞</b-button>
+      <b-button variant="outline-primary" v-else @click="unlike">
+        <i class="fa fa-thumbs-up"></i>
+        已点赞
+      </b-button>
+
+      <p class="mt-2">
+        <span v-if="haveLikeUser">
+          <b-avatar class="mr-2" :key="avatar" v-for="avatar in likeUserAvatars" :src="avatar"></b-avatar>
+        </span>
+        <span v-else class="text-secondary">
+          成为第一个点赞的人吧
+        </span>
+      </p>
+    </b-card>
+  </div>
+
 </template>
 
 <script>
 import Date from '@/components/Date'
 import {mapGetters} from 'vuex'
+import _ from 'lodash'
 
 export default {
   props: ['id'],
@@ -35,13 +56,34 @@ export default {
       content: '',
       createdAt: '',
       user: {},
+      likeUsers: []
     }
   },
   components: {
     Date
   },
   computed: {
-    ...mapGetters(['isLogined'])
+    ...mapGetters({
+      isLogined: 'isLogined',
+      loginUser: 'user',
+    }),
+    isLike() {
+      return Boolean(_.find(this.likeUsers,
+          likeUserId => this.loginUser.id === likeUserId))
+    },
+    likeUserAvatars() {
+      let avatars = []
+      if(this.likeUsers) {
+        _.forEach(this.likeUsers, likeUserId => {
+          let likeUser = this.$store.getters.getUserById(likeUserId)
+          avatars.push(likeUser.avatar)
+        })
+      }
+      return avatars
+    },
+    haveLikeUser() {
+      return !_.isEmpty(this.likeUsers)
+    }
   },
   created() {
     let article = this.$store.getters.getArticleById(this.id)
@@ -51,6 +93,7 @@ export default {
       this.content = article.content
       this.createdAt = article.updated_at || article.created_at
       this.user = article.user
+      this.likeUsers = this.$store.getters.likeUsers(this.id)
     }
 
     this.$nextTick(() => {
@@ -79,6 +122,20 @@ export default {
         })
         this.$router.push('/')
       }
+    },
+    like() {
+      this.$store.dispatch('like', {
+        articleId: this.id,
+        userId: this.loginUser.id
+      })
+      this.likeUsers = this.$store.getters.likeUsers(this.id)
+    },
+    unlike() {
+      this.$store.dispatch('unlike', {
+        articleId: this.id,
+        userId: this.loginUser.id
+      })
+      this.likeUsers = this.$store.getters.likeUsers(this.id)
     }
   }
 }
