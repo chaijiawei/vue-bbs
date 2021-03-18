@@ -55,9 +55,6 @@ export default {
       }).then(res => {
         if(res.isConfirmed) {
           this.$store.dispatch('logout')
-          if(this.$route.path !== '/') {
-            this.$router.push('/')
-          }
         }
       })
     },

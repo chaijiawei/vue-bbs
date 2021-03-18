@@ -9,5 +9,5 @@ module.exports = {
                 'window.hljs': 'highlight.js'
             }),
         ]
-    }
+    },
 }

@@ -17,6 +17,7 @@
     "highlight.js": "^10.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "qrcode.vue": "^1.7.0",
     "quill-emoji": "^0.1.8",
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize": "^3.0.9",

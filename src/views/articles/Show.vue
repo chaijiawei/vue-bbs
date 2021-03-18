@@ -23,18 +23,34 @@
       </b-card-text>
     </b-card>
 
-    <b-card class="mt-4 text-center" v-if="isLogined">
-      <b-button variant="primary" v-if="!isLike" @click="like">点赞</b-button>
-      <b-button variant="outline-primary" v-else @click="unlike">
-        <i class="fa fa-thumbs-up"></i>
-        已点赞
-      </b-button>
+    <b-card class="mt-4 text-center" sub-title="点赞">
+      <div v-if="isLogined">
+        <b-button variant="primary" v-if="!isLike" @click="like">点赞</b-button>
+        <b-button variant="outline-primary" v-else @click="unlike">
+          <i class="fa fa-thumbs-up"></i>
+          已点赞
+        </b-button>
+        <b-button class="ml-2" variant="success" @click="showAwardModal=true">
+          <i class="fa fa-award"></i>
+          打赏
+        </b-button>
+
+        <b-modal v-model="showAwardModal">
+          <qrcode-vue class="text-center" value="https://www.baidu.com"></qrcode-vue>
+          <template #modal-footer>
+            <div class="w-100 text-center text-secondary">
+              感谢您的打赏 <i class="fa fa-heart text-success"></i>
+            </div>
+          </template>
+        </b-modal>
+
+      </div>
 
       <p class="mt-2">
         <span v-if="haveLikeUser">
-          <b-avatar class="mr-2" :key="avatar" v-for="avatar in likeUserAvatars" :src="avatar"></b-avatar>
+            <b-avatar class="mr-2" :key="avatar" v-for="avatar in likeUserAvatars" :src="avatar"></b-avatar>
         </span>
-        <span v-else class="text-secondary">
+        <span v-else-if="isLogined" class="text-secondary">
           成为第一个点赞的人吧
         </span>
       </p>
@@ -47,6 +63,7 @@
 import Date from '@/components/Date'
 import {mapGetters} from 'vuex'
 import _ from 'lodash'
+import QrcodeVue from 'qrcode.vue'
 
 export default {
   props: ['id'],
@@ -56,11 +73,13 @@ export default {
       content: '',
       createdAt: '',
       user: {},
-      likeUsers: []
+      likeUsers: [],
+      showAwardModal: false,
     }
   },
   components: {
-    Date
+    Date,
+    QrcodeVue
   },
   computed: {
     ...mapGetters({
