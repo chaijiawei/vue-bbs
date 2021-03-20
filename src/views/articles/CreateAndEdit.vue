@@ -6,11 +6,8 @@
           <b-form-group :state="!$v.title.$error" :invalid-feedback="titleError">
             <b-form-input :state="$v.title.$error ? false : null" v-model="title" placeholder="请填写文章标题"></b-form-input>
           </b-form-group>
-          <b-form-group :state="!$v.content.$error" :invalid-feedback="contentError">
-            <quill-editor v-model="content"
-                          :options="editorOption"
-            >
-
+          <b-form-group :state="!$v.text.$error" :invalid-feedback="contentError">
+            <quill-editor v-model="content" :options="editorOption" @change="onEditorChange($event)">
             </quill-editor>
           </b-form-group>
 
@@ -42,6 +39,7 @@
     data() {
       return {
         content: '',
+        text: '',
         title: '',
         editorOption: {
           placeholder: '请填写文章内容',
@@ -60,6 +58,7 @@
     },
     beforeRouteLeave (to, from, next) {
       this.content = ''
+      this.text = ''
       this.title = ''
       next()
     },
@@ -76,7 +75,7 @@
         return ''
       },
       contentError() {
-        if(!this.$v.content.required) {
+        if(!this.$v.text.required) {
           return '请填写文章内容'
         }
         return ''
@@ -134,15 +133,21 @@
           let article = this.$store.getters.getArticleById(this.id)
           let {content, title} = article
           this.content = content
+          this.text = content
           this.title = title
         }
-      }
+      },
+
+      onEditorChange({html, text}) {
+        this.content = html
+        this.text = text
+      },
     },
     validations: {
       title: {
         required,
       },
-      content: {
+      text: {
         required,
       }
     }

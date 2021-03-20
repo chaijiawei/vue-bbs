@@ -55,6 +55,21 @@
         </span>
       </p>
     </b-card>
+
+    <b-card class="mt-4">
+      <b-form @submit.prevent="onSubmitComment">
+        <b-form-group>
+          <quill-editor :options="editorOption" @change="onEditorChange($event)">
+
+          </quill-editor>
+        </b-form-group>
+
+        <b-button type="submit" variant="success">
+          <i class="fa fa-reply"></i>
+          回复
+        </b-button>
+      </b-form>
+    </b-card>
   </div>
 
 </template>
@@ -64,6 +79,7 @@ import Date from '@/components/Date'
 import {mapGetters} from 'vuex'
 import _ from 'lodash'
 import QrcodeVue from 'qrcode.vue'
+import toolbarConfig from '@/config/quillToolbar'
 
 export default {
   props: ['id'],
@@ -75,6 +91,20 @@ export default {
       user: {},
       likeUsers: [],
       showAwardModal: false,
+      commentContent: '',
+      commentText: '',
+      editorOption: {
+        placeholder: '请填写评论内容',
+        modules: {
+          syntax: true,
+          imageDrop: true,
+          imageResize: true,
+          "emoji-toolbar": true,
+          "emoji-textarea": false,
+          "emoji-shortname": false,
+          toolbar: toolbarConfig,
+        },
+      },
     }
   },
   components: {
@@ -155,6 +185,18 @@ export default {
         userId: this.loginUser.id
       })
       this.likeUsers = this.$store.getters.likeUsers(this.id)
+    },
+    onSubmitComment() {
+      if(_.isEmpty(_.trim(this.commentText))) {
+        this.$swal({
+          title: '请填写评论内容',
+          icon: 'error'
+        })
+      }
+    },
+    onEditorChange({html, text}) {
+      this.commentContent = html
+      this.commentText = text
     }
   }
 }
@@ -165,5 +207,8 @@ export default {
     img {
       max-width: 100%;
     }
+  }
+  .ql-editor {
+    min-height: 150px
   }
 </style>
