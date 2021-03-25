@@ -58,6 +58,26 @@ const mutations = {
                 return false
             }
         })
+    },
+    addComment(state, {userId, articleId, comment, commentId}) {
+        _.forEach(state.articles, (article, index) => {
+            if(article.id === articleId) {
+                if(!article.comments) {
+                    article.comments = []
+                }
+                let time = moment().format('YYYY-MM-DD HH:mm:ss')
+                article.comments.push({
+                    id: commentId,
+                    content: comment,
+                    article_id: articleId,
+                    user_id: userId,
+                    created_at: time,
+                    updated_at: time,
+                })
+                state.articles[index] = article
+                return false
+            }
+        })
     }
 }
 
@@ -98,6 +118,15 @@ const actions = {
             throw new Error('储存空间不足~')
         }
     },
+
+    comment({commit, dispatch}, payload) {
+        let commentId = uuidv4()
+        payload.commentId = commentId
+        commit('addComment', payload)
+        dispatch('syncArticles')
+
+        return commentId
+    }
 }
 
 const getters = {
@@ -122,6 +151,19 @@ const getters = {
         let article = getters.getArticleById(articleId)
 
         return article.likeUsers ? article.likeUsers : []
+    },
+    getArticleComments: (state, getters) => (articleId) => {
+        let article = getters.getArticleById(articleId)
+        if(_.isEmpty(article.comments)) {
+            return []
+        }
+        let comments = _.cloneDeep(article.comments)
+        _.forEach(comments, (comment, index) => {
+            comments[index].user = getters.getUserById(comment.user_id)
+        })
+        comments = _.orderBy(comments, comment => comment.created_at, ['desc'])
+
+        return comments
     }
 }
 

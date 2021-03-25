@@ -21,6 +21,7 @@
     "quill-emoji": "^0.1.8",
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize": "^3.0.9",
+    "strip": "^3.0.0",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",
     "vue-quill-editor": "^3.0.6",
