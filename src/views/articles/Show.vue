@@ -56,18 +56,32 @@
       </p>
     </b-card>
 
-    <b-card class="mt-4" v-if="comments.length > 0">
+    <b-card class="mt-4" v-if="comments.length > 0" id="comment-b-card">
       <b-card-sub-title class="mb-2">回复数量: {{ comments.length }}</b-card-sub-title>
-      <ul class="list-unstyled" id="comments-list">
+      <ul class="list-unstyled">
         <b-media :ref="comment.id" class="my-4" tag="li" v-for="comment in pageComments" :key="comment.id">
           <template #aside>
             <b-avatar :src="comment.user.avatar" class="mr-2"></b-avatar>
           </template>
           <h5>
             {{ comment.user.name }}
-            <small class="ml-2"><i class="fa fa-clock-o"></i> <date :date-time="comment.created_at"></date></small>
+            <small class="ml-2 text-secondary"><i class="fa fa-clock-o"></i> <date :date-time="comment.updated_at"></date></small>
           </h5>
+          <div class="float-right" v-if="canEdit(comment)">
+            <b-button @click="onEditComment(comment)" class="mr-2" size="sm" variant="success">编辑</b-button>
+            <b-button @click="onDeleteComment(comment)" size="sm" variant="danger">删除</b-button>
+          </div>
           <div v-html="comment.content"></div>
+          <div class="my-4" v-show="editCommentShows[comment.id]">
+            <quill-editor v-if="canEdit(comment)"
+                          v-model="editCommentContents[comment.id]"
+                          :options="editorOption"
+                          @change="onCommentEditChange($event, comment.id)">
+
+            </quill-editor>
+            <b-button @click="onSaveEditComment(comment)" class="my-2 mr-2" size="sm" variant="primary">保存</b-button>
+            <b-button @click="onCancelEditComment" class="my-2" size="sm" variant="secondary">取消</b-button>
+          </div>
         </b-media>
       </ul>
       <div class="mt-4">
@@ -75,7 +89,7 @@
             v-model="currentPage"
             :total-rows="rows"
             :per-page="perPage"
-            aria-controls="comments-list"
+            @change="onPageChange"
         ></b-pagination>
       </div>
     </b-card>
@@ -132,6 +146,8 @@ export default {
       comments: [],
       perPage: 5,
       currentPage: 1,
+      editCommentContents: {},
+      editCommentShows: {}
     }
   },
   components: {
@@ -178,7 +194,7 @@ export default {
       this.createdAt = article.updated_at || article.created_at
       this.user = article.user
       this.likeUsers = this.$store.getters.likeUsers(this.id)
-      this.comments = this.$store.getters.getArticleComments(this.id)
+      this.initComments()
     }
 
     this.$nextTick(() => {
@@ -189,6 +205,9 @@ export default {
     })
   },
   methods: {
+    initComments() {
+      this.comments = this.$store.getters.getArticleComments(this.id)
+    },
     async onDelete() {
       let res = await this.$swal({
         title: '确认删除',
@@ -205,7 +224,7 @@ export default {
           showConfirmButton: false,
           timer: 1500,
         })
-        this.$router.push('/')
+        this.$router.push('/column/' + this.user.id)
       }
     },
     like() {
@@ -222,8 +241,11 @@ export default {
       })
       this.likeUsers = this.$store.getters.likeUsers(this.id)
     },
+    hasContent(html) {
+      return !_.isEmpty(_.trim(strip(html)))
+    },
     async onSubmitComment() {
-      if(_.isEmpty(_.trim(strip(this.commentContent)))) {
+      if(!this.hasContent(this.commentContent)) {
         this.$swal({
           title: '请填写评论内容',
           icon: 'error'
@@ -232,25 +254,93 @@ export default {
         return false
       }
 
-      let commentId = await this.$store.dispatch('comment', {
+      await this.$store.dispatch('comment', {
         userId: this.loginUser.id,
         articleId: this.id,
         comment: this.commentContent
       })
-      this.comments = this.$store.getters.getArticleComments(this.id)
+      this.initComments()
       this.commentContent = ''
       this.currentPage = 1
 
       this.$nextTick(() => {
-        let el = this.$refs[commentId][0]
-        if(el) {
-          el.scrollIntoView()
-        }
+        this.commentBoxIntoView()
       })
     },
     onEditorChange({html}) {
       this.commentContent = html
     },
+    onEditComment(comment) {
+      this.editCommentContents = Object.assign({}, {
+        [comment.id]: comment.content
+      })
+      this.editCommentShows = Object.assign({}, {
+        [comment.id]: true
+      })
+    },
+    onCommentEditChange({html}, comment) {
+      this.editCommentContents[comment.id] = html
+    },
+    canEdit({user_id}) {
+      return this.isLogined && this.loginUser.id === user_id
+    },
+    onSaveEditComment(comment) {
+      if(!this.hasContent(this.editCommentContents[comment.id])) {
+        this.$swal({
+          title: '内容不能为空',
+          icon: 'error'
+        })
+        return false
+      }
+
+      this.$store.dispatch('updateComment', {
+        articleId: this.id,
+        commentId: comment.id,
+        content: this.editCommentContents[comment.id]
+      })
+      this.onCancelEditComment()
+      this.initComments()
+      this.$swal({
+        title: '修改成功',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        this.currentPage = 1
+        this.$nextTick(() => {
+          this.commentBoxIntoView()
+        })
+      })
+    },
+    async onDeleteComment(comment) {
+      let res = await this.$swal({
+        title: '确认删除',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+      })
+      if(res.isConfirmed) {
+        this.$store.dispatch('deleteComment', {
+          articleId: this.id,
+          commentId: comment.id
+        })
+        this.initComments()
+      }
+    },
+    onCancelEditComment() {
+      this.editCommentContents = {}
+      this.editCommentShows = {}
+    },
+    onPageChange() {
+      this.$nextTick(() => {
+        this.commentBoxIntoView()
+      })
+    },
+    commentBoxIntoView() {
+      document.querySelector('#comment-b-card') &&
+      document.querySelector('#comment-b-card').scrollIntoView()
+    }
   }
 }
 </script>

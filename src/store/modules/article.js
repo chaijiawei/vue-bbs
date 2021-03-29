@@ -78,6 +78,33 @@ const mutations = {
                 return false
             }
         })
+    },
+
+    updateComment(state, {articleId, commentId, content}) {
+        _.forEach(state.articles, (article, index) => {
+            if(article.id === articleId) {
+                let time = moment().format('YYYY-MM-DD HH:mm:ss')
+                _.forEach(article.comments, (comment, index) => {
+                    if(comment.id === commentId) {
+                        article.comments[index].content = content
+                        article.comments[index].updated_at = time
+                        return false
+                    }
+                })
+                state.articles[index] = article
+                return false
+            }
+        })
+    },
+
+    deleteComment(state, {articleId, commentId}) {
+        _.forEach(state.articles, (article, index) => {
+            if(article.id === articleId) {
+                _.remove(article.comments,  comment => comment.id === commentId)
+                state.articles[index] = article
+                return false
+            }
+        })
     }
 }
 
@@ -126,6 +153,16 @@ const actions = {
         dispatch('syncArticles')
 
         return commentId
+    },
+
+    updateComment({commit, dispatch}, payload) {
+        commit('updateComment', payload)
+        dispatch('syncArticles')
+    },
+
+    deleteComment({commit, dispatch}, payload) {
+        commit('deleteComment', payload)
+        dispatch('syncArticles')
     }
 }
 
@@ -161,7 +198,7 @@ const getters = {
         _.forEach(comments, (comment, index) => {
             comments[index].user = getters.getUserById(comment.user_id)
         })
-        comments = _.orderBy(comments, comment => comment.created_at, ['desc'])
+        comments = _.orderBy(comments, comment => comment.updated_at, ['desc'])
 
         return comments
     }
