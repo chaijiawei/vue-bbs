@@ -76,7 +76,7 @@
             <quill-editor v-if="canEdit(comment)"
                           v-model="editCommentContents[comment.id]"
                           :options="editorOption"
-                          @change="onCommentEditChange($event, comment.id)">
+                          @change="onCommentEditChange($event, comment)">
 
             </quill-editor>
             <b-button @click="onSaveEditComment(comment)" class="my-2 mr-2" size="sm" variant="primary">保存</b-button>
@@ -300,16 +300,9 @@ export default {
       })
       this.onCancelEditComment()
       this.initComments()
-      this.$swal({
-        title: '修改成功',
-        icon: 'success',
-        showConfirmButton: false,
-        timer: 1500,
-      }).then(() => {
-        this.currentPage = 1
-        this.$nextTick(() => {
-          this.commentBoxIntoView()
-        })
+      this.currentPage = 1
+      this.$nextTick(() => {
+        this.commentBoxIntoView()
       })
     },
     async onDeleteComment(comment) {
