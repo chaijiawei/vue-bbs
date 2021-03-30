@@ -8,21 +8,13 @@
       </b-button>
     </b-card-title>
 
-    <b-list-group flush>
-      <b-list-group-item v-for="article in articles" :key="article.id">
-        <b-avatar size="sm" :src="article.user.avatar" class="mr-2"></b-avatar>
-        <b-link class="text-secondary text-decoration-none" :to="`/articles/${article.id}/show`">{{ article.title }}</b-link>
-        <small class="float-right text-secondary">
-          <date :date-time="article.updated_at || article.created_at"></date>
-        </small>
-      </b-list-group-item>
-    </b-list-group>
+    <article-list :articles="articles"></article-list>
   </b-card>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
-import Date from '@/components/Date'
+import ArticleList from '@/components/article/List'
 
 export default {
   data() {
@@ -31,7 +23,7 @@ export default {
     }
   },
   components: {
-    Date
+    ArticleList
   },
   computed: {
     ...mapGetters(['isLogined'])

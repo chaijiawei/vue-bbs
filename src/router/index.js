@@ -11,7 +11,8 @@ const routes = [
         path: '/',
         name: 'home',
         component: () => import('@/views/Home'),
-        meta: {title: '主页'},
+        alias: '/topics',
+        meta: {title: '话题列表'},
     },
     {
         path: '/auth/register',
