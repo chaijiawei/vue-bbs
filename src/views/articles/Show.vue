@@ -23,8 +23,8 @@
       </b-card-text>
     </b-card>
 
-    <b-card class="mt-4 text-center" sub-title="点赞">
-      <div v-if="isLogined">
+    <b-card v-if="isLogined" class="mt-4 text-center" sub-title="点赞">
+      <div>
         <b-button variant="primary" v-if="!isLike" @click="like">点赞</b-button>
         <b-button variant="outline-primary" v-else @click="unlike">
           <i class="fa fa-thumbs-up"></i>
