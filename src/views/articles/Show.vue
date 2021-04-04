@@ -59,7 +59,7 @@
     <b-card class="mt-4" v-if="comments.length > 0" id="comment-b-card">
       <b-card-sub-title class="mb-2">回复数量: {{ comments.length }}</b-card-sub-title>
       <ul class="list-unstyled">
-        <b-media :ref="comment.id" class="my-4" tag="li" v-for="comment in pageComments" :key="comment.id">
+        <b-media :ref="comment.id" class="my-4" tag="li" v-for="comment in pageData" :key="comment.id">
           <template #aside>
             <b-avatar :src="comment.user.avatar" class="mr-2"></b-avatar>
           </template>
@@ -119,6 +119,7 @@ import _ from 'lodash'
 import QrcodeVue from 'qrcode.vue'
 import toolbarConfig from '@/config/quillToolbar'
 import strip from 'strip'
+import pagination from '@/mixin/pagination'
 
 export default {
   props: ['id'],
@@ -145,11 +146,11 @@ export default {
       },
       comments: [],
       perPage: 5,
-      currentPage: 1,
       editCommentContents: {},
       editCommentShows: {}
     }
   },
+  mixins: [pagination],
   components: {
     Date,
     QrcodeVue
@@ -176,14 +177,6 @@ export default {
     haveLikeUser() {
       return !_.isEmpty(this.likeUsers)
     },
-    rows() {
-      return this.comments.length
-    },
-    pageComments() {
-      let start = (this.currentPage - 1) * this.perPage
-      let end = start + this.perPage
-      return _.slice(this.comments, start, end)
-    }
   },
   created() {
     let article = this.$store.getters.getArticleById(this.id)
@@ -207,6 +200,7 @@ export default {
   methods: {
     initComments() {
       this.comments = this.$store.getters.getArticleComments(this.id)
+      this.setPageSource(this.comments)
     },
     async onDelete() {
       let res = await this.$swal({
@@ -224,7 +218,7 @@ export default {
           showConfirmButton: false,
           timer: 1500,
         })
-        this.$router.push('/column/' + this.user.id)
+        this.$router.back()
       }
     },
     like() {

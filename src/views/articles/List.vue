@@ -8,30 +8,49 @@
       </b-button>
     </b-card-title>
 
-    <article-list :articles="articles"></article-list>
+    <article-list id="article-list" :articles="pageData"></article-list>
+    <div class="mt-4">
+      <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          @change="onPageChange"
+      ></b-pagination>
+    </div>
   </b-card>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 import ArticleList from '@/components/article/List'
+import pagination from '@/mixin/pagination'
 
 export default {
   data() {
     return {
-      articles: []
+      articles: [],
     }
   },
+  mixins: [pagination],
   components: {
     ArticleList
   },
   computed: {
-    ...mapGetters(['isLogined'])
+    ...mapGetters(['isLogined']),
   },
-  beforeRouteEnter(to, from, next) {
-    next( vm => {
-      vm.articles = vm.$store.getters.articles()
-    })
+  created() {
+    this.setArticlesData()
   },
+  methods: {
+    onPageChange() {
+      this.$nextTick(() => {
+        document.querySelector('#article-list').scrollIntoView()
+      })
+    },
+    setArticlesData() {
+      this.articles = this.$store.getters.articles()
+      this.setPageSource(this.articles)
+    },
+  }
 }
 </script>

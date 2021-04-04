@@ -23,7 +23,7 @@ Vue.use(VueSweetalert2)
 Vue.use(VueQuillEditor)
 
 if(process.env.VUE_APP_IS_SEED === 'yes') {
-  require('@/seed')
+  require('@/mock')
 }
 
 new Vue({

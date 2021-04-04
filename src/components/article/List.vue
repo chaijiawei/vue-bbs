@@ -32,8 +32,14 @@ export default {
 
     }
   },
+  computed: {
+
+  },
   components: {
     Date
   },
+  methods: {
+
+  }
 }
 </script>

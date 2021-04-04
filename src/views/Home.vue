@@ -12,7 +12,15 @@
       </b-card-header>
 
       <b-card-body>
-        <article-list :articles="articles"></article-list>
+        <article-list id="article-list" :articles="pageData"></article-list>
+        <div class="mt-4">
+          <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              @change="onPageChange"
+          ></b-pagination>
+        </div>
       </b-card-body>
     </b-card>
   </div>
@@ -20,20 +28,35 @@
 
 <script>
 import ArticleList from '@/components/article/List'
+import pagination from '@/mixin/pagination'
 
 export default {
   data() {
     return {
-      articles: []
+      articles: [],
     }
   },
+  mixins: [pagination],
   components: {
     ArticleList
   },
-  beforeRouteEnter(to, from, next) {
-    next( vm => {
-      vm.articles = vm.$store.getters.articles()
-    })
+  created() {
+    this.setArticlesData()
   },
+  methods: {
+    onPageChange() {
+      this.$nextTick(() => {
+        document.querySelector('#article-list').scrollIntoView()
+      })
+    },
+    setArticlesData() {
+      this.articles = this.$store.getters.articles()
+      this.setPageSource(this.articles)
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log(to.query)
+    next()
+  }
 }
 </script>
