@@ -7,7 +7,7 @@
     "build": "vue-cli-service build --dest=docs",
     "build-test": "vue-cli-service build --mode=development --dest=dist",
     "lint": "vue-cli-service lint",
-    "seed": "vue-cli-service serve --mode seedData"
+    "seed": "vue-cli-service serve --mode=seedData"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",

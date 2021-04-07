@@ -32,7 +32,6 @@ const actions = {
             commit('updateUser', user)
             ls.setItem('user', user)
         } catch(err) {
-            commit('updateUser', ls.getItem('user'))
             throw new Error('储存空间不足~')
         }
     }

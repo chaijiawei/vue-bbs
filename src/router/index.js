@@ -87,6 +87,13 @@ const router = new Router({
     routes,
     linkExactActiveClass: 'active',
     base: baseUrl,
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { x: 0, y: 0 }
+        }
+    },
 })
 
 //设置标题

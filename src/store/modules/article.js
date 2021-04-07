@@ -18,41 +18,42 @@ const mutations = {
         state.articles.push(article)
     },
     updateArticle(state, article) {
-        _.forEach(state.articles, (value, index, collection) => {
-            if(value.id === article.id) {
-                value = Object.assign({}, value, article)
-                collection[index] = value
+        _.forEach(state.articles, (oldArticle, index) => {
+            if(oldArticle.id === article.id) {
+                oldArticle = Object.assign({}, oldArticle, article)
+                state.articles[index] = oldArticle
                 return false
             }
         })
+        state.articles = _.cloneDeep(state.articles)
     },
     deleteArticle(state, articleId) {
         let articles = _.filter(state.articles, article => article.id !== articleId)
         state.articles = articles
     },
-    resetArticles(state, articles) {
-        state.articles = articles
-    },
     addLikeUser(state, {articleId, userId}) {
         _.forEach(state.articles, (article, index) => {
             if(article.id === articleId) {
-                if(!state.articles[index].likeUsers) {
-                    state.articles[index].likeUsers = []
+                if(!article.likeUsers) {
+                    article.likeUsers = []
                 }
-                if(! _.find(state.articles[index].likeUsers, likeUserId => likeUserId === userId)) {
-                    state.articles[index].likeUsers.push(userId)
+                if(! _.find(article.likeUsers, likeUserId => likeUserId === userId)) {
+                    article.likeUsers.push(userId)
+                    state.articles[index] = article
                 }
                 return false
             }
         })
+        state.articles = _.cloneDeep(state.articles)
     },
     removeLikeUser(state, {articleId, userId}) {
         _.forEach(state.articles, (article, index) => {
             if(article.id === articleId) {
-                if(state.articles[index].likeUsers) {
-                    state.articles[index].likeUsers =
-                        _.filter(state.articles[index].likeUsers,
+                if(article.likeUsers) {
+                    article.likeUsers =
+                        _.filter(article.likeUsers,
                                 likeUserId => likeUserId !== userId)
+                    state.articles[index] = article
                 }
 
                 return false
@@ -78,6 +79,7 @@ const mutations = {
                 return false
             }
         })
+        state.articles = _.cloneDeep(state.articles)
     },
 
     updateComment(state, {articleId, commentId, content}) {
@@ -95,12 +97,13 @@ const mutations = {
                 return false
             }
         })
+        state.articles = _.cloneDeep(state.articles)
     },
 
     deleteComment(state, {articleId, commentId}) {
         _.forEach(state.articles, (article, index) => {
             if(article.id === articleId) {
-                _.remove(article.comments,  comment => comment.id === commentId)
+                article.comments = _.filter(article.comments, comment => comment.id !== commentId)
                 state.articles[index] = article
                 return false
             }
@@ -137,11 +140,10 @@ const actions = {
         dispatch('syncArticles')
     },
 
-    syncArticles({state, commit}) {
+    syncArticles({state}) {
         try {
             ls.setItem('articles', state.articles)
         } catch(err) {
-            commit('resetArticles', initArticles())
             throw new Error('储存空间不足~')
         }
     },
@@ -167,13 +169,15 @@ const actions = {
 }
 
 const getters = {
-    articles: (state, getters) => () => {
-        let articles = Object.assign({}, state.articles)
+    _getArticles: (state, getters) => () => {
+        let articles = _.cloneDeep(state.articles)
         _.forEach(articles, function(article) {
             article.user = getters.getUserById(article.user_id)
         })
-        articles = _.orderBy(articles, ['updated_at'], ['desc'])
-        return articles
+        return _.orderBy(articles, ['updated_at'], ['desc'])
+    },
+    articles: (state, getters) => () => {
+        return getters._getArticles()
     },
     getArticleById: (state, getters) => (articleId) => {
         let article = _.find(state.articles, article => article.id === articleId)
@@ -182,6 +186,32 @@ const getters = {
             article = Object.assign({}, article, {user})
         }
         return article
+    },
+    getArticleByFilter: (state, getters) => (filter) => {
+        let articles
+        switch(_.toLower(filter)) {
+            case 'vote':
+                articles = _.orderBy(getters._getArticles(),
+                    article => article.likeUsers ? article.likeUsers.length : 0,
+                    ['desc'])
+                break
+            case 'recent':
+                articles = getters.articles()
+                break
+            case 'noreply':
+                articles = _.orderBy(_.filter(getters._getArticles(),
+                    article => !article.comments || article.comments.length === 0),
+                    ['updated_at'],
+                    ['desc'])
+                break
+            default: //活跃
+                articles = _.orderBy(getters._getArticles(),
+                        article => article.comments ? article.comments.length : 0,
+                    ['desc'])
+               break
+       }
+
+       return articles
     },
     articleNum: state => state.articles.length,
     likeUsers: (state, getters) => (articleId) => {

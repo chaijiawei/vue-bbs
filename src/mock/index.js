@@ -12,7 +12,7 @@ ls.setItem('articles', articles)
 //设置评论数据
 import commentData from '@/mock/comment'
 _.forEach(articles, (article, index) => {
-    let comments = commentData(30, article.id)
+    let comments = commentData(_.random(10, 30), article.id)
     articles[index].comments = comments
 })
 ls.setItem('articles', articles)

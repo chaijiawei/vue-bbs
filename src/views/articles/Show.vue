@@ -255,7 +255,7 @@ export default {
       })
       this.initComments()
       this.commentContent = ''
-      this.currentPage = 1
+      this.resetPage()
 
       this.$nextTick(() => {
         this.commentBoxIntoView()
@@ -294,7 +294,7 @@ export default {
       })
       this.onCancelEditComment()
       this.initComments()
-      this.currentPage = 1
+      this.resetPage()
       this.$nextTick(() => {
         this.commentBoxIntoView()
       })
