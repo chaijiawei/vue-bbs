@@ -70,10 +70,11 @@ const routes = [
             {
                 path: '',
                 name: 'column.list',
+                props: true,
                 component: () => import('@/views/articles/List')
             },
             {
-                path: '/articles/:id/show',
+                path: 'articles/:id/show',
                 name: 'articles.show',
                 props: true,
                 component: () => import('@/views/articles/Show'),

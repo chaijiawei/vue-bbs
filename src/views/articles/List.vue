@@ -26,6 +26,7 @@ import ArticleList from '@/components/article/List'
 import pagination from '@/mixin/pagination'
 
 export default {
+  props: ['userId'],
   data() {
     return {
       articles: [],
@@ -48,7 +49,7 @@ export default {
       })
     },
     setArticlesData() {
-      this.articles = this.$store.getters.articles()
+      this.articles = this.$store.getters.articles(this.userId)
       this.setPageSource(this.articles)
     },
   }

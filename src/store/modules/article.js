@@ -14,6 +14,9 @@ const state = () => ({
 })
 
 const mutations = {
+    refreshArticles(state) {
+        state.articles = initArticles()
+    },
     addArticle(state, article) {
         state.articles.push(article)
     },
@@ -165,19 +168,22 @@ const actions = {
     deleteComment({commit, dispatch}, payload) {
         commit('deleteComment', payload)
         dispatch('syncArticles')
-    }
+    },
 }
 
 const getters = {
-    _getArticles: (state, getters) => () => {
+    _getArticles: (state, getters) => (userId) => {
         let articles = _.cloneDeep(state.articles)
+        if(userId) {
+            articles = _.filter(articles, article => article.user_id === userId)
+        }
         _.forEach(articles, function(article) {
             article.user = getters.getUserById(article.user_id)
         })
         return _.orderBy(articles, ['updated_at'], ['desc'])
     },
-    articles: (state, getters) => () => {
-        return getters._getArticles()
+    articles: (state, getters) => (userId) => {
+        return getters._getArticles(userId)
     },
     getArticleById: (state, getters) => (articleId) => {
         let article = _.find(state.articles, article => article.id === articleId)
@@ -214,6 +220,11 @@ const getters = {
        return articles
     },
     articleNum: state => state.articles.length,
+    articleNumByUser: state => (userId) => {
+        return _.filter(state.articles,
+                article => article.user_id === userId
+                ).length
+    },
     likeUsers: (state, getters) => (articleId) => {
         let article = getters.getArticleById(articleId)
 

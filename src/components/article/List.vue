@@ -2,7 +2,14 @@
   <b-list-group flush>
     <b-list-group-item v-for="article in articles" :key="article.id">
       <b-avatar size="sm" :src="article.user.avatar" class="mr-2"></b-avatar>
-      <b-link class="text-secondary text-decoration-none" :to="`/articles/${article.id}/show`">{{ article.title }}</b-link>
+      <b-link class="text-secondary text-decoration-none"
+              :to="{
+                name: 'articles.show',
+                params: {userId: article.user_id, id: article.id}
+              }"
+      >
+        {{ article.title }}
+      </b-link>
       <small class="float-right text-secondary">
         <span v-b-popover.hover.top="`点赞数`">
           <i class="fa fa-thumbs-o-up"></i> {{ article.likeUsers ? article.likeUsers.length : 0 }}

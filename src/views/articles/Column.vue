@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
 
 export default {
   props: ['userId'],
@@ -34,7 +33,9 @@ export default {
     this.user = this.$store.getters.getUserById(this.userId)
   },
   computed: {
-    ...mapGetters(['articleNum'])
+    articleNum() {
+      return this.$store.getters.articleNumByUser(this.userId)
+    }
   },
 }
 </script>

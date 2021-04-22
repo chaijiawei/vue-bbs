@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from '@/App.vue'
+import store from '@/store'
 import { BootstrapVue } from 'bootstrap-vue'
 import router from '@/router'
 import Vuelidate from 'vuelidate'
-import store from '@/store'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueQuillEditor from 'vue-quill-editor'
 
@@ -24,6 +24,8 @@ Vue.use(VueQuillEditor)
 
 if(process.env.VUE_APP_IS_SEED === 'yes') {
   require('@/mock')
+  store.commit('refreshArticles')
+  store.commit('refreshUser')
 }
 
 new Vue({

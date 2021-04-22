@@ -116,7 +116,10 @@
             showConfirmButton: false,
             timer: 1500,
           }).then(() => {
-            this.$router.push({name: 'articles.show', params: {id: articleId}})
+            this.$router.push({
+              name: 'articles.show',
+              params: {userId: this.user.id, id: articleId}
+            })
           })
         } catch(err) {
           this.$swal({

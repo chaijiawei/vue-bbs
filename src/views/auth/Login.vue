@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import ls from '@/utils/localStorage'
 import isLogined from '@/mixin/isLogined'
 
 export default {
@@ -51,7 +50,7 @@ export default {
         return
       }
 
-      let user = ls.getItem('user_database')
+      let user = this.$store.getters.retrieveUser(this.name)
       if(! user
           || user.password !== this.password
           || user.name !== this.name) {
