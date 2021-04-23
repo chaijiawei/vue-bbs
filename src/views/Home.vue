@@ -32,35 +32,7 @@
       </b-col>
 
       <b-col md="3">
-        <b-card>
-          <template #header>
-            <div class="text-center">
-              实战课程
-            </div>
-          </template>
-
-          <b-carousel controls
-                      indicators
-                      background="#ababab"
-          >
-            <a target="_blank" href="https://www.bilibili.com/">
-              <b-carousel-slide img-blank>
-                实战课程一
-              </b-carousel-slide>
-            </a>
-
-            <a target="_blank" href="https://www.baidu.com/">
-              <b-carousel-slide img-blank>
-                实战课程二
-              </b-carousel-slide>
-            </a>
-            <a href="#">
-              <b-carousel-slide img-blank>
-                实战课程三
-              </b-carousel-slide>
-            </a>
-          </b-carousel>
-        </b-card>
+        <slidebar></slidebar>
       </b-col>
     </b-row>
 
@@ -70,22 +42,25 @@
 <script>
 import ArticleList from '@/components/article/List'
 import pagination from '@/mixin/pagination'
+import Slidebar from '@/components/layouts/Slidebar'
 
 export default {
   data() {
     return {
       articles: [],
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
+      perPage: 20
     }
   },
   mixins: [pagination],
   components: {
-    ArticleList
+    ArticleList,
+    Slidebar
   },
   methods: {
     onPageChange() {
       this.$nextTick(() => {
-        document.querySelector('#home-card-header').scrollIntoView()
+        window.scrollTo(0, 0)
       })
     },
     setArticlesData(filter) {

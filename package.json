@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "add": "^2.0.6",
+    "axios": "^0.21.1",
     "bootstrap-scss": "4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",

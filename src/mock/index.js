@@ -1,5 +1,6 @@
 import articleData from '@/mock/article'
 import userData from '@/mock/user'
+import {mockGetActiveUsers} from '@/mock/user'
 import commentData from '@/mock/comment'
 import ls from "@/utils/localStorage"
 import _ from 'lodash'
@@ -34,6 +35,8 @@ _.forEach(articles, (article, index) => {
     articles[index].comments = comments
 })
 ls.setItem('articles', articles)
+
+mockGetActiveUsers(users)
 
 
 

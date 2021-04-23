@@ -182,7 +182,7 @@ const getters = {
         })
         return _.orderBy(articles, ['updated_at'], ['desc'])
     },
-    articles: (state, getters) => (userId) => {
+    articles: (state, getters) => (userId = null) => {
         return getters._getArticles(userId)
     },
     getArticleById: (state, getters) => (articleId) => {

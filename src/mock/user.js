@@ -34,3 +34,11 @@ const getUser = () => {
 const userData = (num = 1) => _.times(num, getUser)
 
 export default userData
+
+export function mockGetActiveUsers(users) {
+    Mock.mock(
+        '/users/active',
+        'get',
+        () => Random.pick(users, 5)
+    )
+}

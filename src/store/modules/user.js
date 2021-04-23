@@ -52,7 +52,7 @@ const actions = {
         } catch(err) {
             throw new Error('储存空间不足~')
         }
-    }
+    },
 }
 
 const getters = {
@@ -67,6 +67,23 @@ const getters = {
 
         return _.find(users, user => user.name === name)
     },
+    getActiveUsers: (state, getters) => {
+        let articles = getters.articles()
+        let users = {}
+        _.forEach(articles, article => {
+            let commentNum = article.comments ? article.comments.length : 0
+            if(users[article.user_id]) {
+                users[article.user_id].commentsNum += commentNum
+            } else {
+                users[article.user_id] = Object.assign({}, {
+                    commentsNum: 0,
+                }, getters.getUserById(article.user_id))
+            }
+        })
+        users = _.orderBy(users, user => user.commentsNum, ['desc'])
+
+        return _.slice(users, 0, 10)
+    }
 }
 
 export default {
