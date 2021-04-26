@@ -71,18 +71,19 @@ const getters = {
         let articles = getters.articles()
         let users = {}
         _.forEach(articles, article => {
-            let commentNum = article.comments ? article.comments.length : 0
-            if(users[article.user_id]) {
-                users[article.user_id].commentsNum += commentNum
-            } else {
-                users[article.user_id] = Object.assign({}, {
-                    commentsNum: 0,
-                }, getters.getUserById(article.user_id))
-            }
+            _.forEach(article.comments, comment => {
+                if(users[comment.user_id]) {
+                    users[comment.user_id].commentsNum += 1
+                } else {
+                    users[comment.user_id] = Object.assign({}, {
+                        commentsNum: 0,
+                    }, getters.getUserById(comment.user_id))
+                }
+            })
         })
         users = _.orderBy(users, user => user.commentsNum, ['desc'])
 
-        return _.slice(users, 0, 10)
+        return _.slice(users, 0, 5)
     }
 }
 

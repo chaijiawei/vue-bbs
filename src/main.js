@@ -27,6 +27,9 @@ if(process.env.VUE_APP_IS_SEED === 'yes') {
   store.commit('refreshArticles')
   store.commit('refreshUser')
 }
+let users = store.getters.getActiveUsers
+import {mockGetActiveUsers} from '@/mock/user'
+mockGetActiveUsers(users)
 
 new Vue({
   store,

@@ -37,15 +37,17 @@
         </div>
       </template>
 
-      <b-button
-          v-for="activeUser in activeUsers"
-          :key="activeUser.id"
-          class="mr-2 mb-2" pill variant="light"
-          :to="{name: 'column.list', params: {userId: activeUser.id}}"
-      >
-        <b-avatar size="sm" class="mr-1"></b-avatar>
-        {{ activeUser.name }}
-      </b-button>
+      <div>
+        <b-button
+            v-for="activeUser in activeUsers"
+            :key="activeUser.id"
+            class="mr-2 mb-2" pill variant="light"
+            :to="{name: 'column.list', params: {userId: activeUser.id}}"
+        >
+          <b-avatar size="sm" class="mr-1"></b-avatar>
+          {{ activeUser.name }}
+        </b-button>
+      </div>
     </b-card>
   </div>
 

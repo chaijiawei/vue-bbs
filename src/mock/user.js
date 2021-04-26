@@ -39,6 +39,6 @@ export function mockGetActiveUsers(users) {
     Mock.mock(
         '/users/active',
         'get',
-        () => Random.pick(users, 5)
+        users
     )
 }
