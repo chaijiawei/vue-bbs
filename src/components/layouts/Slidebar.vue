@@ -49,6 +49,28 @@
         </b-button>
       </div>
     </b-card>
+
+    <b-card class="my-4">
+      <template #header>
+        <div class="text-center">
+          热门文章
+        </div>
+      </template>
+
+      <b-list-group flush>
+        <b-list-group-item :to="{
+          name: 'articles.show',
+          params: {
+            userId: hotArticle.user_id,
+            id: hotArticle.id
+          }
+        }"
+          :key="hotArticle.id"
+          v-for="hotArticle in hotArticles">
+          {{ hotArticle.title }}
+        </b-list-group-item>
+      </b-list-group>
+    </b-card>
   </div>
 
 </template>
@@ -59,12 +81,17 @@ export default {
   data() {
     return {
       activeUsers: [],
+      hotArticles: [],
     }
   },
 
   async created() {
-    // this.activeUsers = this.$store.getters.getActiveUsers
-    this.activeUsers = (await axios.get('/users/active')).data
+    this.activeUsers = this.$isSeed
+        ? (await axios.get('/users/active')).data
+        : this.$store.getters.getActiveUsers
+
+    this.hotArticles = this.$store.getters.hotArticles
+    console.log(this.hotArticles)
   }
 }
 </script>

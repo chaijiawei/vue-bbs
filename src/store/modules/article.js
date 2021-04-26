@@ -242,7 +242,13 @@ const getters = {
         comments = _.orderBy(comments, comment => comment.updated_at, ['desc'])
 
         return comments
-    }
+    },
+    hotArticles: (state, getters) => _.slice(
+        _.orderBy(getters._getArticles(),
+        article => article.comments
+            ? article.comments.length
+            : 0, ['desc']),
+        0, 7)
 }
 
 
