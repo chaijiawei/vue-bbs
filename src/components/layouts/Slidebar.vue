@@ -91,7 +91,6 @@ export default {
         : this.$store.getters.getActiveUsers
 
     this.hotArticles = this.$store.getters.hotArticles
-    console.log(this.hotArticles)
   }
 }
 </script>

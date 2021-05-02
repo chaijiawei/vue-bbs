@@ -248,7 +248,34 @@ const getters = {
         article => article.comments
             ? article.comments.length
             : 0, ['desc']),
-        0, 7)
+        0, 7),
+
+    getArticleByKeyword: (state, getters) => (searchVal) => {
+        let articles = _.cloneDeep(state.articles)
+
+        articles = _.filter(articles, article => {
+            let reg = new RegExp(searchVal, 'i')
+            return reg.test(article.title) || reg.test(article.content)
+        })
+
+        _.forEach(articles, function(article) {
+            let reg = new RegExp(`(${searchVal})`, 'ig')
+            article.user = getters.getUserById(article.user_id)
+            let replace = '<span class="text-success">$1</span>'
+            article.title = article.title.replace(reg, replace)
+            let contentIndex = article.content.search(reg)
+            let from = 0
+            let limit = 100
+            if(contentIndex !== -1) {
+                from = contentIndex
+            }
+            article.summary = article.content.substr(from, limit).replace(reg, replace)
+            if(article.content.length > limit) {
+                article.summary += ' ...'
+            }
+        })
+        return _.orderBy(articles, ['updated_at'], ['desc'])
+    }
 }
 
 

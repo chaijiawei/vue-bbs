@@ -81,6 +81,13 @@ const routes = [
             },
         ]
     },
+
+    //搜索
+    {
+        path: '/search',
+        name: 'search',
+        component: () => import('@/views/Search')
+    }
 ]
 
 const router = new Router({

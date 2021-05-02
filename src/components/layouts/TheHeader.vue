@@ -15,12 +15,15 @@
       </b-navbar-nav>
     </b-collapse>
 
-    <TheEntry/>
+    <search></search>
+
+    <the-entry></the-entry>
   </b-navbar>
 </template>
 
 <script>
 import TheEntry from '@/components/layouts/TheEntry'
+import Search from '@/components/layouts/Search'
 
 export default {
   data() {
@@ -33,7 +36,8 @@ export default {
     }
   },
   components: {
-    TheEntry
+    TheEntry,
+    Search
   },
   methods: {
 
