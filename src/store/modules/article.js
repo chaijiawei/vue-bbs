@@ -250,7 +250,7 @@ const getters = {
             : 0, ['desc']),
         0, 7),
 
-    getArticleByKeyword: (state, getters) => (searchVal) => {
+    getArticleByKeyword: (state, getters) => (searchVal, sort) => {
         let articles = _.cloneDeep(state.articles)
 
         articles = _.filter(articles, article => {
@@ -261,7 +261,7 @@ const getters = {
         _.forEach(articles, function(article) {
             let reg = new RegExp(`(${searchVal})`, 'ig')
             article.user = getters.getUserById(article.user_id)
-            let replace = '<span class="text-success">$1</span>'
+            let replace = '<span class="text-success font-weight-bold">$1</span>'
             article.title = article.title.replace(reg, replace)
             let contentIndex = article.content.search(reg)
             let from = 0
@@ -274,7 +274,22 @@ const getters = {
                 article.summary += ' ...'
             }
         })
-        return _.orderBy(articles, ['updated_at'], ['desc'])
+        articles = _.orderBy(articles, ['updated_at'], ['desc'])
+        switch(sort) {
+            case 'like':
+                articles = _.orderBy(articles, article => article.likeUsers
+                    ? article.likeUsers.length
+                    : 0, ['desc'])
+                break
+            case 'relative':
+                articles = _.orderBy(articles,
+                        article => article.title.indexOf(searchVal) === -1
+                            ? -9999
+                            : 233 - article.title.indexOf(searchVal),
+                    ['desc'])
+                break
+        }
+        return articles
     }
 }
 
