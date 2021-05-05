@@ -79,6 +79,7 @@ export default {
     this.$store.commit('updateSearchVal', to.query.q)
     this.q = to.query.q
     this.fetchArticles(to.query.q)
+    this.sort = ''
     next()
   },
   methods: {

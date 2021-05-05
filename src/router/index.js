@@ -87,13 +87,22 @@ const routes = [
         path: '/search',
         name: 'search',
         component: () => import('@/views/Search')
-    }
+    },
+
+    //分类
+    {
+        path: '/category/:categoryId',
+        name: 'category',
+        props: true,
+        component: () => import('@/views/Home'),
+    },
 ]
 
 const router = new Router({
     mode: 'history',
     routes,
     linkExactActiveClass: 'active',
+    linkActiveClass: 'active',
     base: baseUrl,
     scrollBehavior (to, from, savedPosition) {
         if (savedPosition) {

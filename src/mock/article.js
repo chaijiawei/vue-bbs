@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
 import { v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
+import { CATEGORY_LIST } from '@/store/modules/article/_category'
 
 const Random = Mock.Random
 
@@ -9,6 +10,7 @@ const getArticle = (userIds) => {
     return {
         id: uuidv4(),
         title: Random.title(),
+        category_id: Random.pick(CATEGORY_LIST).id,
         user_id: Random.pick(userIds),
         content: Random.paragraph(),
         created_at: dateTime,

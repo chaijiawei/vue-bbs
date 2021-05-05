@@ -2,13 +2,17 @@
   <div>
     <b-row>
       <b-col md="9">
+        <b-alert variant="success" show v-if="targetCategory !== null">
+        {{ targetCategory.name }}：{{ targetCategory.descr }}
+        </b-alert>
         <b-card no-body>
           <b-card-header id="home-card-header" header-tag="nav">
             <b-nav card-header tabs>
-              <b-nav-item link-classes="text-secondary" to="/">活跃</b-nav-item>
-              <b-nav-item link-classes="text-secondary" to="topics?filter=vote">投票</b-nav-item>
-              <b-nav-item link-classes="text-secondary" to="topics?filter=recent">最近</b-nav-item>
-              <b-nav-item link-classes="text-secondary" to="topics?filter=noreply">零回复</b-nav-item>
+              <b-nav-item exact v-for="filter in filters" :key="filter.name"
+                          link-classes="text-secondary"
+                          :to="filter.filter ? `${$route.path}?filter=${filter.filter}` : $route.path">
+                {{ filter.name }}
+              </b-nav-item>
             </b-nav>
           </b-card-header>
 
@@ -43,19 +47,35 @@
 import ArticleList from '@/components/article/List'
 import pagination from '@/mixin/pagination'
 import Slidebar from '@/components/layouts/Slidebar'
+import { mapGetters } from 'vuex'
+import _ from 'lodash'
 
 export default {
   data() {
     return {
       articles: [],
       publicPath: process.env.BASE_URL,
-      perPage: 20
+      perPage: 20,
     }
   },
+  props: ['categoryId'],
   mixins: [pagination],
   components: {
     ArticleList,
     Slidebar
+  },
+  computed: {
+    ...mapGetters(['filters', 'categories']),
+    targetCategory() {
+      if(!this.categoryId) {
+        return null
+      }
+
+      let target = _.find(this.categories,
+          category => category.id === this.categoryId)
+
+      return target ?  target : null
+    },
   },
   methods: {
     onPageChange() {
@@ -64,17 +84,25 @@ export default {
       })
     },
     setArticlesData(filter) {
-      this.articles = this.$store.getters.getArticleByFilter(filter)
+      this.articles = this.$store.getters.getArticleByFilter(filter, this.categoryId)
       this.setPageSource(this.articles)
     },
+
+    fetchData(filter) {
+      this.resetPage()
+      this.setArticlesData(filter)
+    }
   },
   created() {
-    this.setArticlesData(this.$route.query.filter)
   },
   beforeRouteUpdate(to, from, next) {
-    this.resetPage()
-    this.setArticlesData(to.query.filter)
+    this.fetchData(to.query.filter)
     next()
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fetchData(to.query.filter)
+    })
+  }
 }
 </script>

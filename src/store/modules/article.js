@@ -2,6 +2,8 @@ import ls from "@/utils/localStorage"
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
+import { CATEGORY_LIST } from '@/store/modules/article/_category'
+import { FILTER_LIST } from '@/store/modules/article/_filter'
 
 const initArticles = () => {
     return ls.getItem('articles') && _.isArray(ls.getItem('articles'))
@@ -11,6 +13,8 @@ const initArticles = () => {
 
 const state = () => ({
     articles: initArticles(),
+    categories: CATEGORY_LIST,
+    filters: FILTER_LIST
 })
 
 const mutations = {
@@ -172,10 +176,13 @@ const actions = {
 }
 
 const getters = {
-    _getArticles: (state, getters) => (userId) => {
+    _getArticles: (state, getters) => (userId, categoryId) => {
         let articles = _.cloneDeep(state.articles)
         if(userId) {
             articles = _.filter(articles, article => article.user_id === userId)
+        }
+        if(categoryId) {
+            articles = _.filter(articles, article => article.category_id === categoryId)
         }
         _.forEach(articles, function(article) {
             article.user = getters.getUserById(article.user_id)
@@ -193,25 +200,25 @@ const getters = {
         }
         return article
     },
-    getArticleByFilter: (state, getters) => (filter) => {
-        let articles
+    getArticleByFilter: (state, getters) => (filter, categoryId) => {
+        let articles = getters._getArticles(null, categoryId)
         switch(_.toLower(filter)) {
             case 'vote':
-                articles = _.orderBy(getters._getArticles(),
+                articles = _.orderBy(articles,
                     article => article.likeUsers ? article.likeUsers.length : 0,
                     ['desc'])
                 break
             case 'recent':
-                articles = getters.articles()
+                //do nothing
                 break
             case 'noreply':
-                articles = _.orderBy(_.filter(getters._getArticles(),
+                articles = _.orderBy(_.filter(articles,
                     article => !article.comments || article.comments.length === 0),
                     ['updated_at'],
                     ['desc'])
                 break
             default: //活跃
-                articles = _.orderBy(getters._getArticles(),
+                articles = _.orderBy(articles,
                         article => article.comments ? article.comments.length : 0,
                     ['desc'])
                break
@@ -290,7 +297,11 @@ const getters = {
                 break
         }
         return articles
-    }
+    },
+
+    categories: state => state.categories,
+
+    filters: state => state.filters
 }
 
 

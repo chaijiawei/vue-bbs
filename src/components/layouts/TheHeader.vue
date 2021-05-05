@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="light" variant="info" class="my-3 bg-light">
-    <b-navbar-brand  to="/">
+    <b-navbar-brand  to="/topics">
       <img width="32" :src="logo.src" :alt="logo.title">
       <span class="title">{{ logo.title }}</span>
     </b-navbar-brand >
@@ -9,8 +9,8 @@
 
     <b-collapse id="vue-bbs-header-navbar" is-nav>
       <b-navbar-nav>
-        <b-nav-item v-for="(item) in navList" :key="item" href="#" >
-          {{ item }}
+        <b-nav-item v-for="category in categories" :key="category.id" :to="`/category/${category.id}`" >
+          {{ category.name }}
         </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
@@ -24,6 +24,7 @@
 <script>
 import TheEntry from '@/components/layouts/TheEntry'
 import Search from '@/components/layouts/Search'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -32,8 +33,10 @@ export default {
         src: process.env.BASE_URL + "logo.png",
         title: 'Learnku Vue.js'
       },
-      navList: ['社区', '头条', '问答', '教程'],
     }
+  },
+  computed: {
+    ...mapGetters(['categories'])
   },
   components: {
     TheEntry,

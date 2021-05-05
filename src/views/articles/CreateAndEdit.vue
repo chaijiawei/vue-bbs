@@ -6,6 +6,19 @@
           <b-form-group :state="!$v.title.$error" :invalid-feedback="titleError">
             <b-form-input :state="$v.title.$error ? false : null" v-model="title" placeholder="请填写文章标题"></b-form-input>
           </b-form-group>
+
+          <b-form-group :state="!$v.categoryId.$error" :invalid-feedback="categoryIdError">
+            <b-form-select :state="$v.categoryId.$error ? false : null" v-model="categoryId">
+              <b-form-select-option disabled value="">请选择分类</b-form-select-option>
+              <b-form-select-option
+                  v-for="category in categories"
+                  :key="category.id"
+                  :value="category.id">
+                {{ category.name }}
+              </b-form-select-option>
+            </b-form-select>
+          </b-form-group>
+
           <b-form-group :state="!$v.content.$error" :invalid-feedback="contentError">
             <quill-editor v-model="content" :options="editorOption" @change="onEditorChange($event)">
             </quill-editor>
@@ -44,6 +57,7 @@
       return {
         content: '',
         title: '',
+        categoryId: '',
         editorOption: {
           placeholder: '请填写文章内容',
           modules: {
@@ -65,11 +79,11 @@
       next()
     },
     created() {
-      this.initArticle()
+
     },
     mixins: [isLogined],
     computed: {
-      ...mapGetters(['user']),
+      ...mapGetters(['user', 'categories']),
       titleError() {
         if(!this.$v.title.required) {
           return '请填写标题'
@@ -79,6 +93,12 @@
       contentError() {
         if(!this.$v.content.required || !this.$v.content.hasText) {
           return '请填写文章内容'
+        }
+        return ''
+      },
+      categoryIdError() {
+        if(!this.$v.categoryId.required) {
+          return '请选择分类'
         }
         return ''
       },
@@ -98,6 +118,7 @@
             article = {
               id: this.id,
               title: this.title,
+              category_id: this.categoryId,
               content: this.content,
             }
             this.updateArticle(article)
@@ -105,6 +126,7 @@
             article = {
               title: this.title,
               content: this.content,
+              category_id: this.categoryId,
               user_id: this.user.id,
             }
             articleId = await this.createArticle(article)
@@ -136,9 +158,10 @@
       initArticle() {
         if(this.id) {
           let article = this.$store.getters.getArticleById(this.id)
-          let {content, title} = article
+          let {content, title, category_id} = article
           this.content = content
           this.title = title
+          this.categoryId = category_id ? category_id : ''
         }
       },
 
@@ -153,6 +176,9 @@
       content: {
         required,
         hasText,
+      },
+      categoryId: {
+        required,
       }
     }
   }
