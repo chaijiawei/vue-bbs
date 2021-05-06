@@ -11,6 +11,7 @@ import { ImageDrop } from 'quill-image-drop-module'
 import ImageResize from 'quill-image-resize'
 import QuillEmoji from 'quill-emoji'
 import {mockGetActiveUsers} from '@/mock/user'
+import runMock from '@/mock'
 
 //quill 插件
 Quill.register('modules/imageDrop', ImageDrop);
@@ -26,9 +27,9 @@ Vue.use(VueQuillEditor)
 const isSeed = process.env.VUE_APP_IS_SEED === 'yes'
 Vue.prototype.$isSeed = isSeed
 if(isSeed) {
-  require('@/mock')
-  store.commit('refreshArticles')
+  runMock()
   store.commit('refreshUser')
+  store.commit('refreshArticles')
 
   let users = store.getters.getActiveUsers
   mockGetActiveUsers(users)

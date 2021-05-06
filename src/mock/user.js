@@ -4,13 +4,10 @@ import _ from 'lodash'
 
 const Random = Mock.Random
 
-let master = true
-
-const getUser = () => {
+const getUser = (isMaster = false) => {
     let dateTime = Random.datetime()
     let user
-    if(master) {
-        master = false
+    if(isMaster) {
         user = {
             id: '1',
             name: 'cjw',
@@ -31,11 +28,13 @@ const getUser = () => {
     return user
 }
 
-const userData = (num = 1) => _.times(num, getUser)
+const userData = (num = 1, isMaster = false) =>
+    _.times(num,
+        () => getUser(isMaster))
 
 export default userData
 
-export function mockGetActiveUsers(users) {
+export const mockGetActiveUsers = users => {
     Mock.mock(
         '/users/active',
         'get',

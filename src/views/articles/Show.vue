@@ -5,8 +5,10 @@
         {{ title }}
       </b-card-title>
       <small class="d-block text-secondary text-center">
-        <i class="fa fa-user"></i> {{ user.name }}
+        <i class="far fa-user"></i> {{ user.name }}
         &bullet;
+        <i class="far fa-folder"></i> {{ category.name }}
+        &bull;
         <i class="fa fa-clock-o"></i> <date :date-time="createdAt"></date>
       </small>
 
@@ -127,6 +129,7 @@ export default {
     return {
       title: '',
       content: '',
+      category: null,
       createdAt: '',
       user: {},
       likeUsers: [],
@@ -186,6 +189,7 @@ export default {
       this.content = article.content
       this.createdAt = article.updated_at || article.created_at
       this.user = article.user
+      this.category = article.category
       this.likeUsers = this.$store.getters.likeUsers(this.id)
       this.initComments()
     }

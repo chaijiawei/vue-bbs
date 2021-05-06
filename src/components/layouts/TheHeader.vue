@@ -15,15 +15,19 @@
       </b-navbar-nav>
     </b-collapse>
 
+
     <search></search>
 
     <the-entry></the-entry>
+
+    <faker></faker>
   </b-navbar>
 </template>
 
 <script>
 import TheEntry from '@/components/layouts/TheEntry'
 import Search from '@/components/layouts/Search'
+import Faker from '@/components/Faker'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -40,7 +44,8 @@ export default {
   },
   components: {
     TheEntry,
-    Search
+    Search,
+    Faker
   },
   methods: {
 

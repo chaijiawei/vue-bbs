@@ -1,8 +1,8 @@
 <template>
   <div class="container" id="app">
-    <TheHeader/>
-    <router-view></router-view>
-    <TheFooter/>
+    <the-header></the-header>
+    <router-view v-if="isAlive"></router-view>
+    <the-footer></the-footer>
   </div>
 </template>
 
@@ -17,7 +17,20 @@ export default {
   },
   data() {
     return {
-
+      isAlive: true
+    }
+  },
+  provide() {
+    return {
+      refresh: this.refresh,
+    }
+  },
+  methods: {
+    refresh() {
+      this.isAlive = false
+      this.$nextTick(() => {
+        this.isAlive = true
+      })
     }
   }
 }

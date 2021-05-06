@@ -186,6 +186,7 @@ const getters = {
         }
         _.forEach(articles, function(article) {
             article.user = getters.getUserById(article.user_id)
+            article.category = _.find(CATEGORY_LIST, category => category.id === article.category_id )
         })
         return _.orderBy(articles, ['updated_at'], ['desc'])
     },
@@ -197,6 +198,8 @@ const getters = {
         if(article) {
             let user = getters.getUserById(article.user_id)
             article = Object.assign({}, article, {user})
+            article.category = _.find(CATEGORY_LIST,
+                    category => category.id === article.category_id)
         }
         return article
     },

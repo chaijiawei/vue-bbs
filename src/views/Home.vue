@@ -56,9 +56,10 @@ export default {
       articles: [],
       publicPath: process.env.BASE_URL,
       perPage: 20,
+      categoryId: '',
+      isCreated: false,
     }
   },
-  props: ['categoryId'],
   mixins: [pagination],
   components: {
     ArticleList,
@@ -83,25 +84,43 @@ export default {
         window.scrollTo(0, 0)
       })
     },
-    setArticlesData(filter) {
-      this.articles = this.$store.getters.getArticleByFilter(filter, this.categoryId)
+    setArticlesData(filter, categoryId) {
+      this.articles = this.$store.getters.getArticleByFilter(filter, categoryId)
       this.setPageSource(this.articles)
     },
 
-    fetchData(filter) {
+    fetchData(filter, categoryId) {
       this.resetPage()
-      this.setArticlesData(filter)
+      this.setArticlesData(filter, categoryId)
+    },
+
+    setTitle() {
+      if(this.targetCategory) {
+        document.title = `话题列表-${this.targetCategory.name}`
+      }
+    },
+
+    init(categoryId, filter) {
+      this.categoryId = categoryId
+      this.setTitle()
+      this.fetchData(filter, categoryId)
     }
   },
   created() {
+    this.isCreated = true
+    this.init(this.$route.params.categoryId, this.$route.query.filter)
   },
   beforeRouteUpdate(to, from, next) {
-    this.fetchData(to.query.filter)
+    this.init(to.params.categoryId, to.query.filter)
     next()
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.fetchData(to.query.filter)
+      if(vm.isCreated) {
+        vm.isCreated = false
+        return
+      }
+      vm.init(to.params.categoryId, to.query.filter)
     })
   }
 }

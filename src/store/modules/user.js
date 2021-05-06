@@ -13,7 +13,7 @@ const mutations = {
     updateUser(state, user) {
         state.user = user
     },
-    refreshUser() {
+    refreshUser(state) {
         state.user = ls.getItem('user')
     },
 }

@@ -41,6 +41,8 @@ export default {
   },
   created() {
     this.setArticlesData()
+    let user = this.$store.getters.getUserById(this.userId)
+    document.title = `${user.name} 的专栏`
   },
   methods: {
     onPageChange() {

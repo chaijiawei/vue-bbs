@@ -20,6 +20,12 @@
           <i class="fa fa-comment-o"></i> {{ article.comments ? article.comments.length : 0 }}
         </span>
         &bull;
+        <span v-b-popover.hover.top="`分类`">
+          <b-link class="text-secondary" :to="{name: 'category', params: {categoryId: article.category_id}}">
+            <i class="far fa-folder"></i> {{ article.category.name }}
+          </b-link>
+        </span>
+        &bull;
         <span v-b-popover.hover.top="article.updated_at" >
           <i class="fa fa-clock-o"></i> <date :date-time="article.updated_at"></date>
         </span>

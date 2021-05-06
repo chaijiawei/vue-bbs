@@ -43,6 +43,8 @@ export default {
   computed: {
     ...mapGetters(['isLogined', 'user']),
   },
+  created() {
+  },
   methods: {
     logout() {
       this.$swal({
