@@ -271,6 +271,7 @@ const getters = {
         _.forEach(articles, function(article) {
             let reg = new RegExp(`(${searchVal})`, 'ig')
             article.user = getters.getUserById(article.user_id)
+            article.category = _.find(CATEGORY_LIST, category => category.id === article.category_id)
             let replace = '<span class="text-success font-weight-bold">$1</span>'
             article.title = article.title.replace(reg, replace)
             let contentIndex = article.content.search(reg)
