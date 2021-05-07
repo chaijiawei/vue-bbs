@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d21a3d2"],{bb51:function(e,n,t){"use strict";t.r(n);var b=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("b-jumbotron",{attrs:{header:"vue-bbs",lead:"cjw的bbs"}},[t("p",[e._v("我是bbs")])])],1)},s=[],u=t("2877"),a={},r=Object(u["a"])(a,b,s,!1,null,null,null);n["default"]=r.exports}}]);
-//# sourceMappingURL=chunk-2d21a3d2.8ec7c3a3.js.map
